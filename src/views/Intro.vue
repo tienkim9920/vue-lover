@@ -174,6 +174,10 @@ export default {
     .header-intro{
         padding: 0 1rem;
     }
+
+    .header-logo h1{
+        margin-top: 1.6rem;
+    }
 }
 
 </style>
