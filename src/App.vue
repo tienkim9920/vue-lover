@@ -1,11 +1,9 @@
 <template>
-  <v-facebook-login app-id="1188277554976347" v-model="model" @sdk-init="handleSdkInit"></v-facebook-login>
-  <button v-if="scope.logout && model.connected" @click="scope.logout">
-      Logout
-  </button>
+  <v-facebook-login app-id="1188277554976347" @login="onClick"></v-facebook-login>
 </template>
 
 <script>
+// import { reactive, watchEffect } from 'vue'
 import VFacebookLogin from 'vue-facebook-login-component-next'
 
 export default {
@@ -13,19 +11,25 @@ export default {
   components: {
     VFacebookLogin,
   },
-  data: () => ({
-      FB: {},
-      model: {},
-      scope: {},
-    }),
-  methods: {
-    handleSdkInit({ FB, scope }) {
-      this.FB = FB
-      this.scope = scope
 
-      console.log(this.model)
-    },
-  },
+  setup(){
+
+    // const test = reactive({
+    //   isCheck: false
+    // })
+
+    // watchEffect(() => {
+    //   console.log(test.isCheck)
+    // })
+
+    const onClick = ({ response }) => {
+      console.log(response)
+    }
+
+    return { onClick }
+
+  }
+
 }
 </script>
 
