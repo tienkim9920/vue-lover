@@ -1,9 +1,8 @@
 <template>
-  <v-facebook-login app-id="1188277554976347" @login="onClick"></v-facebook-login>
+  <v-facebook-login app-id="1188277554976347" @login="loginFacebook"></v-facebook-login>
 </template>
 
 <script>
-// import { reactive, watchEffect } from 'vue'
 import VFacebookLogin from 'vue-facebook-login-component-next'
 
 export default {
@@ -14,21 +13,15 @@ export default {
 
   setup(){
 
-    // const test = reactive({
-    //   isCheck: false
-    // })
-
-    // watchEffect(() => {
-    //   console.log(test.isCheck)
-    // })
-
-    const onClick = () => {
+    const loginFacebook = () => {
       
-      console.log(JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')))
+      const user = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
+
+      console.log(user)
 
     }
 
-    return { onClick }
+    return { loginFacebook }
 
   }
 
