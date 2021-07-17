@@ -22,8 +22,10 @@ export default {
     //   console.log(test.isCheck)
     // })
 
-    const onClick = ({ response }) => {
-      console.log(response)
+    const onClick = () => {
+      
+      console.log(JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')))
+
     }
 
     return { onClick }
