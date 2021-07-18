@@ -12,9 +12,29 @@
     <div class="title-intro">
         <h1>Swipe Right</h1>
         <div class="parent-btn-create">
-            <a class="btn-create">Create Account</a>
+            <a class="btn-create" data-bs-toggle="modal" data-bs-target="#signup">Create Account</a>
         </div>
     </div>
+</div>
+<div class="footer">
+    <div class="container">
+        <div class="intro-app">
+            <h2>GET THE APP!</h2>
+            <p>Single people, listen up: if you're looking for love, want to start dating, or just keep it casual, 
+                you need to be on Lover. With over 55 billion matches made, it's the place to be to meet your next best match. 
+                Let's be real, the dating landscape looks very different tody, as most people are meeting online.
+                With Lover, the world's most popular free dating app, you have millions of other single at your fingertips and they's all ready to meet someone like you.</p>
+            <p>There really is something for everyone on Lover. Want to get into a relationshop? You got it. 
+                Trying to find some new friend? Say no more. New kid on campus and looking to make the most of your college experience? Lover U's got you covered.
+                Lover isn't your average dating site - it;s the most diverse dating app, 
+                where adults of all backgrounds and experience are invited to make connections, memories, and everything in between.
+            </p>
+        </div>
+        <div class="copyright">
+            <a href="https://www.facebook.com/KimTien.9920/" target="_blank">Copyright © 2021 Nou Bakery. Powered by Nguyễn Kim Tiền</a>
+        </div>
+    </div>
+
 </div>
 
 <div class="modal fade" id="login">
@@ -67,19 +87,21 @@
 </div>
 
 <div class="modal fade" id="signup">
-
+    <SignUp />
 </div>
 </template>
 
 <script>
 import VFacebookLogin from 'vue-facebook-login-component-next'
 import SignIn from '../component/intro/SignIn.vue'
+import SignUp from '../component/intro/SignUp.vue'
 
 export default {
     name: "Intro",
     components: {
         VFacebookLogin,
-        SignIn
+        SignIn,
+        SignUp
     },
 
     setup() {
@@ -124,8 +146,35 @@ export default {
     }
 }
 
-.modal{
+/* .modal{
     top: 2.5rem;
+} */
+
+
+.copyright{
+    font-family: 'Raleway', sans-serif;
+    letter-spacing: .05rem;
+    padding: 2rem;
+    text-align: center;
+}
+
+.copyright a{
+    color: #323232;
+    text-decoration: none;
+}
+
+.intro-app{
+    padding: 2rem 0 1rem 0;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.intro-app h2{
+    padding-bottom: 1rem;
+}
+
+.intro-app p{
+    font-family: 'Raleway', sans-serif;
+    letter-spacing: .05rem;
 }
 
 .btn-login-lover {
@@ -324,9 +373,9 @@ export default {
         margin-top: 1.6rem;
     }
 
-    .modal{
+    /* .modal{
         top: 1.8rem;
-    }
+    } */
 
     .v-facebook-login {
         padding: .7rem 0;
@@ -339,6 +388,14 @@ export default {
 
     .login-lover{
         width: 100%;
+    }
+
+    .intro-app p{
+        font-size: .9rem;
+    }
+
+    .copyright a{
+        font-size: 1rem;
     }
 }
 </style>

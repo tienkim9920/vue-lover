@@ -8,22 +8,28 @@
             <div class="d-flex justify-content-center">
                 <div class="text-center">
                     <img class="img-modal-login" src="../../assets/icon.png" alt="">
-                    <h3 class="h-start">SIGN IN</h3>
+                    <h3 class="h-start">SIGN UP</h3>
                 </div>
             </div>
             <div>
                 <div class="group-input">
-                    <input type="text" placeholder="Phone Number" v-model="phone">
-                     <!-- <span class="error">* Invalid Phone!</span> -->
+                    <input type="text" placeholder="Full Name">
+                    <!-- <span class="error">* Invalid Email!</span> -->
+                </div>                
+                <div class="group-input">
+                    <input type="email" placeholder="Email">
                 </div>
                 <div class="group-input">
-                    <input type="password" placeholder="Password" v-model="password">
+                    <input type="text" placeholder="Phone Number">
                 </div>
-                <div class="redirect-login" data-bs-toggle="modal" data-bs-target="#signup">
-                    <span data-bs-dismiss="modal" aria-label="Close">Do you want to Account?</span>
+                <div class="group-input">
+                    <input type="password" placeholder="Password">
+                </div>
+                <div class="redirect-login" data-bs-toggle="modal" data-bs-target="#login">
+                    <span data-bs-dismiss="modal" aria-label="Close">Do you want to login?</span>
                 </div>
                 <div class="btn-modal-signin">
-                    <input type="submit" value="SIGN IN" @click="onSignIn">
+                    <input type="submit" value="SIGN UP">
                 </div>
             </div>
         </div>
@@ -32,27 +38,11 @@
 </template>
 
 <script>
-// import { reactive } from 'vue'
 export default {
     name: 'SignIn',
-    data() {
-        return {
-            phone: '',
-            password: ''
-        }
+    setup() {
+
     },
-    methods: {
-        onSignIn() {
-            
-            const data = {
-                phone: this.phone,
-                password: this.password
-            }
-
-            console.log(data)
-
-        }
-    }
 }
 </script>
 
