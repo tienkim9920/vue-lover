@@ -1,74 +1,220 @@
 <template>
-    <div class="header-intro">
-        <div class="header-logo">
-            <img src="../assets/icon.png" alt="">
-            <h1>Lover</h1>
-        </div>
-        <div class="header-login">
-            <a class="btn-login" data-bs-toggle="modal" data-bs-target="#login">Log in</a>
+<div class="header-intro">
+    <div class="header-logo">
+        <img src="../assets/icon.png" alt="">
+        <h1>Lover</h1>
+    </div>
+    <div class="header-login">
+        <a class="btn-login" data-bs-toggle="modal" data-bs-target="#login">Log in</a>
+    </div>
+</div>
+<div class="banner-intro">
+    <div class="title-intro">
+        <h1>Swipe Right</h1>
+        <div class="parent-btn-create">
+            <a class="btn-create">Create Account</a>
         </div>
     </div>
-    <div class="banner-intro">
-        <div class="title-intro">
-            <h1>Swipe Right</h1>
-            <div class="parent-btn-create">
-                <a class="btn-create">Create Account</a>
-            </div>
-        </div>
-    </div>
+</div>
 
-    <div class="modal fade" id="login">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="d-flex justify-content-end">
-                    <i class="fa fa-remove close-login" data-bs-dismiss="modal" aria-label="Close"></i>
+<div class="modal fade" id="login">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="d-flex justify-content-end">
+                <i class="fa fa-remove close-login" data-bs-dismiss="modal" aria-label="Close"></i>
+            </div>
+            <div class="p-modal-login">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <img class="img-modal-login" src="../assets/icon.png" alt="">
+                        <h3 class="h-start">GET STARTED</h3>
+                    </div>
                 </div>
-                <div class="p-modal-login">
-                    <div class="d-flex justify-content-center">
-                        <div class="text-center">
-                            <img class="img-modal-login" src="../assets/icon.png" alt="">
-                            <h3 class="h-start">GET STARTED</h3>
+                <div class="text-center">
+                    <p class="chitiet-modal">
+                        By clicking Log In, you agree to our Terms.
+                        Learn how we process your date in our Privacy Policy and Cookie Policy
+                    </p>
+                </div>
+                <div class="group-btn-login">
+                    <div class="btn-facebook">
+                        <v-facebook-login app-id="1188277554976347" @login="loginFacebook"></v-facebook-login>
+                    </div>
+                    <div class="btn-login-lover" data-bs-toggle="modal" data-bs-target="#signin">
+                        <a class="login-lover" data-bs-dismiss="modal" aria-label="Close">Log in With Phone Number</a>
+                    </div>
+                    <div class="btn-login-lover" data-bs-toggle="modal" data-bs-target="#signup">
+                        <a class="login-lover" data-bs-dismiss="modal" aria-label="Close">Sign Up</a>
+                    </div>
+                    <div class="line-modal-login">
+                        <div class="line-login">
+
                         </div>
                     </div>
-                    <div class="text-center">
-                        <p class="chitiet-modal">
-                            By clicking Log In, you agree to our Terms. 
-                            Learn how we process your date in our Privacy Policy and Cookie Policy
-                        </p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div style="padding: 1rem">
+                        <h3 class="h-start">GET THE APP!</h3>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="signin">
+    <SignIn />
+</div>
+
+<div class="modal fade" id="signup">
+
+</div>
 </template>
 
 <script>
+import VFacebookLogin from 'vue-facebook-login-component-next'
+import SignIn from '../component/intro/SignIn.vue'
+
 export default {
     name: "Intro",
-    setup() {
-        
+    components: {
+        VFacebookLogin,
+        SignIn
     },
+
+    setup() {
+        const loginFacebook = () => {
+            const user = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
+            console.log(user)
+        }
+        return {
+            loginFacebook
+        }
+    }
+
 }
 </script>
 
 <style>
+.modal.show .modal-dialog {
+    animation: fadeIn .5s ease;
+}
 
-.chitiet-modal{
+.modal-dialog {
+    animation: fadeOut .5s ease;
+}
+
+@keyframes fadeOut {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0.6);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        transform: scale(0.6);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.modal{
+    top: 2.5rem;
+}
+
+.btn-login-lover {
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+.line-modal-login {
+    display: flex;
+    justify-content: center;
+}
+
+.line-login {
+    width: 80%;
+    height: 1px;
+    background-color: #e2e2e2;
+}
+
+.login-lover {
+    width: 80%;
+    padding: .7rem 0;
+    border-radius: 3rem;
+    border: 2px solid #929292;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #929292;
+    cursor: pointer;
+    transform: translateY(0px);
+    transition: all .5s ease-in-out;
+}
+
+.login-lover:hover {
+    color: #929292;
+    transform: translateY(-5px)
+}
+
+.btn-facebook {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    transform: translateY(0px);
+    transition: all .5s ease-in-out;
+}
+
+.btn-facebook:hover {
+    transform: translateY(-5px)
+}
+
+.v-facebook-login {
+    background-color: transparent;
+    padding: .7rem 0;
+    width: 80%;
+    border-radius: 3rem;
+    border: 2px solid #929292;
+}
+
+.v-facebook-login svg {
+    width: 30px;
+    height: 25px;
+    margin-right: 2rem;
+    background-color: #fff;
+    color: #298CFA;
+}
+
+.v-facebook-login span {
+    color: #7e7e7e;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: .03rem;
+    line-height: 20px;
+}
+
+.chitiet-modal {
     font-size: .85rem;
     font-family: 'Raleway', sans-serif;
 }
 
-.h-start{
+.h-start {
     font-weight: bold;
     font-style: italic;
 }
 
-.img-modal-login{
+.img-modal-login {
     width: 100px;
 }
 
-.header-intro{
+.header-intro {
     position: fixed;
     width: 100%;
     padding: 0 2rem;
@@ -76,22 +222,22 @@ export default {
     justify-content: space-between;
 }
 
-.header-logo{
+.header-logo {
     display: flex;
-    
+
 }
 
-.header-logo h1{
+.header-logo h1 {
     margin-top: 1rem;
     color: #fff;
 }
 
-.header-logo img{
+.header-logo img {
     width: 80px;
     height: 80px;
 }
 
-.banner-intro{
+.banner-intro {
     background-image: url(../assets/gioithieu.jpg);
     background-size: cover;
     background-repeat: no-repeat;
@@ -103,11 +249,11 @@ export default {
     align-items: center;
 }
 
-.header-login{
+.header-login {
     margin-top: 2rem;
 }
 
-.btn-login{
+.btn-login {
     text-decoration: none;
     color: #FD546C;
     text-transform: uppercase;
@@ -119,23 +265,23 @@ export default {
     cursor: pointer;
 }
 
-.btn-login:hover{
+.btn-login:hover {
     background-color: #FD546C;
     color: #fff;
     transition: all .1s ease;
 }
 
-.title-intro h1{
+.title-intro h1 {
     color: #fff;
     font-size: 6rem;
 }
 
-.parent-btn-create{
+.parent-btn-create {
     text-align: center;
     margin-top: 2rem;
 }
 
-.btn-create{
+.btn-create {
     text-decoration: none;
     color: #fff;
     text-transform: uppercase;
@@ -145,16 +291,15 @@ export default {
     background-color: #FD546C;
     border-radius: 2rem;
     cursor: pointer;
-
 }
 
-.btn-create:hover{
+.btn-create:hover {
     background-color: #fc415d;
     color: #fff;
     transition: all .1s ease;
 }
 
-.close-login{
+.close-login {
     font-size: 30px;
     color: #323232;
     margin-right: 1rem;
@@ -162,22 +307,38 @@ export default {
     cursor: pointer;
 }
 
-.p-modal-login{
+.p-modal-login {
     padding: 0 2rem;
 }
 
-@media only screen and (max-width: 600px){
-    .title-intro h1{
+@media only screen and (max-width: 600px) {
+    .title-intro h1 {
         font-size: 4rem;
     }
 
-    .header-intro{
+    .header-intro {
         padding: 0 1rem;
     }
 
-    .header-logo h1{
+    .header-logo h1 {
         margin-top: 1.6rem;
     }
-}
 
+    .modal{
+        top: 1.8rem;
+    }
+
+    .v-facebook-login {
+        padding: .7rem 0;
+        width: 100%;
+    }
+
+    .v-facebook-login svg{
+        margin-right: 0rem;
+    }
+
+    .login-lover{
+        width: 100%;
+    }
+}
 </style>
