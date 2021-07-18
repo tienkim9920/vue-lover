@@ -14,10 +14,11 @@
             <div>
                 <div class="group-input">
                     <input type="text" placeholder="Phone Number" v-model="phone">
-                     <!-- <span class="error">* Invalid Phone!</span> -->
+                    <span class="error" v-if="errorPhone">* Invalid Phone!</span>
                 </div>
                 <div class="group-input">
                     <input type="password" placeholder="Password" v-model="password">
+                    <span class="error" v-if="errorPassword">* Invalid Password!</span>
                 </div>
                 <div class="redirect-login" data-bs-toggle="modal" data-bs-target="#signup">
                     <span data-bs-dismiss="modal" aria-label="Close">Do you want to Account?</span>
@@ -32,49 +33,78 @@
 </template>
 
 <script>
-// import { reactive } from 'vue'
+import {
+    ref
+} from 'vue'
+
 export default {
     name: 'SignIn',
-    data() {
-        return {
-            phone: '',
-            password: ''
+    setup() {
+
+        const phone = ref('')
+        const password = ref('')
+
+        const errorPhone = ref(false)
+        const errorPassword = ref(false)
+
+        const validation = () => {
+            if (!phone.value) {
+                errorPhone.value = true
+                errorPassword.value = false
+                return
+            }
+
+            if (!password.value) {
+                errorPhone.value = false
+                errorPassword.value = true
+                return
+            }
         }
-    },
-    methods: {
-        onSignIn() {
-            
+
+        const onSignIn = () => {
+
+            validation()
+
             const data = {
-                phone: this.phone,
-                password: this.password
+                phone: phone.value,
+                password: password.value
             }
 
             console.log(data)
 
         }
+
+        return {
+            phone,
+            password,
+            errorPhone,
+            errorPassword,
+            validation,
+            onSignIn
+        }
+
     }
 }
 </script>
 
 <style>
-
-.redirect-login{
+.redirect-login {
     text-align: end;
     margin-top: 1rem;
     cursor: pointer;
 }
 
-.redirect-login:hover{
+.redirect-login:hover {
     color: #FD546C;
 }
 
-.btn-modal-signin{
+.btn-modal-signin {
     display: flex;
     justify-content: center;
     margin: 3rem 0;
 }
 
-.btn-modal-signin input{
+.btn-modal-signin input {
     width: 100%;
     color: #fff;
     text-transform: uppercase;
@@ -87,20 +117,20 @@ export default {
     border: none;
 }
 
-.btn-modal-signin input:hover{
+.btn-modal-signin input:hover {
     background-color: #f83a56;
 }
 
-.error{
+.error {
     color: rgb(255, 102, 102);
     padding-left: .5rem;
 }
 
-.group-input{
+.group-input {
     margin-top: 1rem;
 }
 
-.group-input input{
+.group-input input {
     width: 100%;
     outline: none;
     border: none;
@@ -108,5 +138,4 @@ export default {
     padding: .5rem 1rem;
     font-size: 1.1rem;
 }
-
 </style>

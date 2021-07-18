@@ -31,7 +31,7 @@
             </p>
         </div>
         <div class="copyright">
-            <a href="https://www.facebook.com/KimTien.9920/" target="_blank">Copyright © 2021 Nou Bakery. Powered by Nguyễn Kim Tiền</a>
+            <a href="https://www.facebook.com/KimTien.9920/" target="_blank">Copyright © 2021 Lover. Powered by Nguyễn Kim Tiền</a>
         </div>
     </div>
 
@@ -396,6 +396,10 @@ export default {
 
     .copyright a{
         font-size: 1rem;
+    }
+
+    .modal-content{
+        margin-top: 3rem;
     }
 }
 </style>

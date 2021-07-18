@@ -12,24 +12,27 @@
                 </div>
             </div>
             <div>
+                <div class="text-center error" >
+                    * Note: Please Enter Full Infomation!
+                </div>
                 <div class="group-input">
-                    <input type="text" placeholder="Full Name">
-                    <!-- <span class="error">* Invalid Email!</span> -->
+                    <input type="text" placeholder="Full Name" v-model="fullname">               
                 </div>                
                 <div class="group-input">
-                    <input type="email" placeholder="Email">
+                    <input type="email" placeholder="Email" v-model="email">                 
                 </div>
                 <div class="group-input">
-                    <input type="text" placeholder="Phone Number">
+                    <input type="text" placeholder="Phone Number" v-model="phone">                    
                 </div>
                 <div class="group-input">
-                    <input type="password" placeholder="Password">
+                    <input type="password" placeholder="Password" v-model="password">                  
                 </div>
                 <div class="redirect-login" data-bs-toggle="modal" data-bs-target="#login">
                     <span data-bs-dismiss="modal" aria-label="Close">Do you want to login?</span>
                 </div>
                 <div class="btn-modal-signin">
-                    <input type="submit" value="SIGN UP">
+                    <input type="submit" value="SIGN UP" @click="onSignUp" v-if="(fullname && email && phone && password)">
+                    <input type="submit" value="SIGN UP" class="bg-signup" v-else>
                 </div>
             </div>
         </div>
@@ -38,15 +41,40 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+
 export default {
     name: 'SignIn',
     setup() {
+        
+        const fullname = ref('')
+        const email = ref('')
+        const phone = ref('')
+        const password = ref('')
+
+        const onSignUp = () => {
+
+            console.log("123")
+
+        }
+
+        return {
+            fullname,
+            email,
+            phone,
+            password,
+            onSignUp
+        }
 
     },
 }
 </script>
 
 <style>
+
+.bg-signup{
+    background-color: #EBEEF3 !important;
+}
 
 .redirect-login{
     text-align: end;
