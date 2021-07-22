@@ -108,6 +108,8 @@ export default {
         const loginFacebook = () => {
             const user = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
             console.log(user)
+
+            this.$router.push({ path: '/home' })
         }
         return {
             loginFacebook
@@ -372,10 +374,6 @@ export default {
     .header-logo h1 {
         margin-top: 1.6rem;
     }
-
-    /* .modal{
-        top: 1.8rem;
-    } */
 
     .v-facebook-login {
         padding: .7rem 0;

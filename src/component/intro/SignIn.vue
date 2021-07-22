@@ -37,6 +37,10 @@ import {
     ref
 } from 'vue'
 
+import {
+    useRouter
+} from 'vue-router'
+
 export default {
     name: 'SignIn',
     setup() {
@@ -47,7 +51,10 @@ export default {
         const errorPhone = ref(false)
         const errorPassword = ref(false)
 
-        const validation = () => {
+        const router = useRouter()
+
+        const onSignIn = () => {
+
             if (!phone.value) {
                 errorPhone.value = true
                 errorPassword.value = false
@@ -59,11 +66,6 @@ export default {
                 errorPassword.value = true
                 return
             }
-        }
-
-        const onSignIn = () => {
-
-            validation()
 
             const data = {
                 phone: phone.value,
@@ -72,6 +74,13 @@ export default {
 
             console.log(data)
 
+            document.getElementsByClassName('modal-backdrop')[0].setAttribute("style", 
+                "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+            document.getElementsByClassName('modal-backdrop')[1].setAttribute("style", 
+                "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+
+            router.push('/home')
+
         }
 
         return {
@@ -79,7 +88,6 @@ export default {
             password,
             errorPhone,
             errorPassword,
-            validation,
             onSignIn
         }
 
