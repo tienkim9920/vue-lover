@@ -5,6 +5,8 @@ import Match from "../component/match/Match.vue"
 import Message from "../component/message/Message.vue"
 import Profile from "../component/profile/Profile.vue"
 import Another from "../component/another/Another.vue"
+import Setting from "../component/setting/Setting.vue"
+import Edit from "../component/setting/Edit.vue"
 
 const routes = [
     {
@@ -30,6 +32,13 @@ const routes = [
             {
                 path: 'another',
                 component: Another
+            },
+            {
+                path: 'setting',
+                component: Setting,
+            },{
+                path: 'setting/edit',
+                component: Edit
             }
         ]
     },

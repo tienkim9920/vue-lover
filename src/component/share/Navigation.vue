@@ -3,7 +3,7 @@
     <div class="fixed-nav-header">
         <div class="navigation-header">
             <img src="../../assets/avt1.jpg" alt="">
-            <!-- <router-link to="/setting/edit">My Profile</router-link> -->
+            <router-link to="/home/setting">My Profile</router-link>
         </div>
         <div class="navigation-content">
             <a @click="onActiveNav('matches')">Matches</a>
@@ -120,6 +120,10 @@ export default {
 </script>
 
 <style>
+.navigation-header a{
+    background-color: transparent;
+}
+
 .another-hide .exact-active {
     border-right: none;
 }

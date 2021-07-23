@@ -109,6 +109,11 @@ export default {
             const user = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
             console.log(user)
 
+            document.getElementsByClassName('modal-backdrop')[0].setAttribute("style", 
+                "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+            document.getElementsByClassName('modal-backdrop')[1].setAttribute("style", 
+                "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+
             this.$router.push({ path: '/home' })
         }
         return {

@@ -36,6 +36,9 @@
         <div class="profile-bio">
             <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod, provident recusandae. Quos expedita id, cumque aliquam ducimus ea culpa praesentium odit, magni, at fugiat vitae quod saepe et? Natus, error!</span>
         </div>
+        <div class="btn-edit-setting">
+            <router-link to="/home/setting/edit">Edit Info</router-link>
+        </div>
     </div>
 </div>
 </template>
@@ -45,7 +48,7 @@ import avt2 from "../../assets/avt2.jpg"
 import avt3 from "../../assets/avt3.jpg"
 
 export default {
-    name: 'Profile',
+    name: 'Setting',
     data: () => {
         return {
             image: [{
@@ -77,52 +80,26 @@ export default {
 </script>
 
 <style>
-.layout-profile{
-    display: flex;
-    justify-content: center;
+.btn-edit-setting{
+    text-align: center;
+    padding-bottom: 2rem;
 }
 
-.profile-bio {
-    padding: 1.3rem 1.3rem 2.2rem 1.3rem;
-    font-family: 'Raleway', sans-serif;
+.btn-edit-setting a{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: .05rem;
+    font-size: .9rem;
+    padding: .6rem 1.8rem;
+    background-color: #FD546C;
+    border-radius: 2rem;
+    cursor: pointer;
+    box-shadow: 0 0 0.2em 0.2em rgba(170, 170, 170, 0.25);
 }
 
-.profile-body {
-    border-bottom: 1px solid #e4e4e4;
-    padding: 1rem 0;
+.btn-edit-setting a:hover{
+    background-color: #ff405c;
 }
 
-.detail-profile-body {
-    padding: .3rem 1rem 0 1rem;
-    color: rgb(105, 105, 105);
-    font-family: 'Raleway', sans-serif;
-}
-
-.title-profile-body span {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.title-profile-body h3 {
-    margin-top: 2.5rem;
-    padding: 0rem 1rem 0 1rem;
-}
-
-.wrapper-profile-user {
-    position: relative;
-    width: 385px;
-    height: 721px;
-    overflow-y: scroll;
-    border: 1px solid #e4e4e4;
-    /* box-shadow: 0 0 0.25em 0.25em rgba(136, 136, 136, 0.25); */
-}
-
-.profile-header {
-    position: relative;
-    width: 100%;
-    height: 490px;
-}
-
-.img-profile-header img {
-    width: 100%;
-}
 </style>

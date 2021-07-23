@@ -1,23 +1,31 @@
 <template>
 <div class="group-doituong">
-    <div class="list-doituong">
-        <div class="detail-doituong">
-            <div v-for="item in image" :key="item.id">
-                <img v-bind:class="(showImage === item.id) ? 'active-image-matches' : 'unactive-image-matches'" :src="item.src" alt="">
+    <div v-for="(user, index) in users" :key="index">
+        <div v-bind:class="(showUser === index) ? 'list-doituong active' : 'list-doituong unactive'">
+            <div class="detail-doituong">
+                <div v-for="item in user.image" :key="item.id">
+                    <img v-bind:class="(showImage === item.id) ? 'active-image-matches' : 'unactive-image-matches'" :src="item.src" alt="">
+                </div>
             </div>
-        </div>
-        <div class="count-image-line" v-bind:style="{ gridTemplateColumns: gridTemplateColumns }">
-            <div v-for="item in image" :key="item.id" v-bind:class="(showImage === item.id) ? 'active-image-line' : 'unactive-image-line'">
+            <div class="count-image-line" v-bind:style="{ gridTemplateColumns: `repeat(${user.image.length}, minmax(60px, 1fr))` }">
+                <div v-for="item in user.image" :key="item.id" v-bind:class="(showImage === item.id) ? 'active-image-line' : 'unactive-image-line'">
+                </div>
             </div>
-        </div>
-        <a class="view-image arrow-next" v-if="showImage < image.length" @click="nextImage">
-            <i class="fa fa-chevron-right" style="font-size: 26px; color: #fff"></i></a>
-        <a class="view-image arrow-prev" v-if="showImage !== 1" @click="prevImage">
-            <i class="fa fa-chevron-left" style="font-size: 26px; color: #fff"></i></a>
-        <div class="group-option-user">
-            <i class="fa fa-close icon-option-delete" style="color: #FE5266"></i>
-            <i class="fa fa-star icon-option-star" style="color: #36CAF6"></i>
-            <i class="fa fa-heart icon-option-tym" style="color: #23EBC2"></i>
+            <a class="view-image arrow-next" v-if="showImage < user.image.length" @click="nextImage">
+                <i class="fa fa-chevron-right" style="font-size: 26px; color: #fff"></i></a>
+            <a class="view-image arrow-prev" v-if="showImage !== 1" @click="prevImage">
+                <i class="fa fa-chevron-left" style="font-size: 26px; color: #fff"></i></a>
+            <div class="group-option-user">
+                <i class="fa fa-close icon-option-delete" @click="clickUnlike()" style="color: #FE5266"></i>
+                <i class="fa fa-star icon-option-star" style="color: #36CAF6"></i>
+                <i class="fa fa-heart icon-option-tym" @click="clickLike()" style="color: #23EBC2"></i>
+            </div>
+            <div class="group-matches-name">
+                <span>Tiền Kim</span>
+                <router-link :to="'/home/profile/' + '1'">
+                    <i class="fa fa-address-book" style="font-size:32px"></i>
+                </router-link>
+            </div>
         </div>
     </div>
 </div>
@@ -34,85 +42,145 @@
         </li>
     </div>
 </div> -->
-
 </template>
 
 <script>
 import avt2 from "../../assets/avt2.jpg"
 import avt3 from "../../assets/avt3.jpg"
-// import avt4 from "../../assets/avt4.jpg"
-// import avt5 from "../../assets/avt5.jpg"
-// import {
-//     ref
-// } from 'vue'
+import avt4 from "../../assets/avt4.jpg"
+import avt5 from "../../assets/avt5.jpg"
+import {
+    ref,
+    reactive,
+} from 'vue'
 
 export default {
     name: 'Match',
-    data: () => {
-        return {
-            image: [{
-                    id: 1,
-                    src: avt2
-                },
-                {
-                    id: 2,
-                    src: avt3
-                },
-            ],
-            showImage: 1,
-            gridTemplateColumns: '',
-            // items: [{
-            //         id: 1,
-            //         title: "Item A",
-            //         list: 1
-            //     },
-            //     {
-            //         id: 2,
-            //         title: "Item B",
-            //         list: 1
-            //     },
-            //     {
-            //         id: 3,
-            //         title: "Item C",
-            //         list: 2
-            //     },
-            // ],
-        }
-    },
-    created() {
-        this.gridTemplateColumns = `repeat(${this.image.length}, minmax(60px, 1fr))`
-    },
-    mounted(){
-        console.log(this.count)
-    },
+    // data: () => {
+    //     return {
+    //         image: [{
+    //                 id: 1,
+    //                 src: avt2
+    //             },
+    //             {
+    //                 id: 2,
+    //                 src: avt3
+    //             },
+    //         ],
+    //         showImage: 1,
+    //         gridTemplateColumns: '',
+    //         items: [{
+    //                 id: 1,
+    //                 title: "Item A",
+    //                 list: 1
+    //             },
+    //             {
+    //                 id: 2,
+    //                 title: "Item B",
+    //                 list: 1
+    //             },
+    //             {
+    //                 id: 3,
+    //                 title: "Item C",
+    //                 list: 2
+    //             },
+    //         ],
+    //     }
+    // },
+    // created() {
+    //     this.gridTemplateColumns = `repeat(${this.image.length}, minmax(60px, 1fr))`
+    // },
 
-    methods: {
-        nextImage() {
-            this.showImage = this.showImage + 1
-        },
+    // methods: {
+    //     nextImage() {
+    //         this.showImage = this.showImage + 1
+    //     },
 
-        prevImage() {
-            this.showImage = this.showImage - 1
-        },
+    //     prevImage() {
+    //         this.showImage = this.showImage - 1
+    //     },
 
-        // getList(list) {
-        //     return this.items.filter(item => item.list === list)
-        // },
+    //     getList(list) {
+    //         return this.items.filter(item => item.list === list)
+    //     },
 
-        // startDrag(event, item) {
-        //     console.log(item)
-        //     event.dataTransfer.dropEffect = 'move'
-        //     event.dataTransfer.effectAllowed = 'move'
-        //     event.dataTransfer.setData('itemID', item.id)
-        // },
+    //     startDrag(event, item) {
+    //         console.log(item)
+    //         event.dataTransfer.dropEffect = 'move'
+    //         event.dataTransfer.effectAllowed = 'move'
+    //         event.dataTransfer.setData('itemID', item.id)
+    //     },
 
-        // onDrop(event, list) {
-        //     const itemID = event.dataTransfer.getData('itemID')
-        //     const index = this.items.findIndex(item => item.id === parseInt(itemID))
-        //     this.items[index].list = list
-        // }
-    },
+    //     onDrop(event, list) {
+    //         const itemID = event.dataTransfer.getData('itemID')
+    //         const index = this.items.findIndex(item => item.id === parseInt(itemID))
+    //         this.items[index].list = list
+    //     }
+    // },
     setup() {
+
+        const users = reactive([{
+                id: 1,
+                name: 'Tiền Kim',
+                image: [{
+                        id: 1,
+                        src: avt2
+                    },
+                    {
+                        id: 2,
+                        src: avt3
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: 'Mỹ Hân',
+                image: [{
+                        id: 1,
+                        src: avt4
+                    },
+                    {
+                        id: 2,
+                        src: avt5
+                    }
+                ]
+            }
+        ])
+
+        const showUser = ref(0)
+
+        const showImage = ref(1)
+
+        const gridTemplateColumns = ref('')
+
+        const nextImage = () => {
+            showImage.value = showImage.value + 1
+        }
+
+        const prevImage = () => {
+            showImage.value = showImage.value - 1
+        }
+
+        const clickLike = () => {
+            showUser.value = showUser.value + 1
+            showImage.value = 1
+        }
+
+        const clickUnlike = () => {
+            showUser.value = showUser.value + 1
+            showImage.value = 1
+        }
+
+        return {
+            users,
+            showImage,
+            showUser,
+            gridTemplateColumns,
+            nextImage,
+            prevImage,
+            clickLike,
+            clickUnlike
+        }
 
     },
 }
@@ -135,10 +203,25 @@ export default {
     margin-bottom: 10px;
 } */
 
+.group-matches-name {
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
+    border: 1px solid #e4e4e4;
+    display: flex;
+    justify-content: space-between;
+    color: #323232;
+}
+
+.group-matches-name i {
+    margin-top: .6rem;
+    cursor: pointer;
+    color: #323232;
+}
+
 .group-option-user {
     position: absolute;
-    top: 85%;
-    left: 19.5%;
+    top: 73%;
+    left: 16%;
 }
 
 .icon-option-delete {
@@ -212,6 +295,15 @@ export default {
     position: relative;
 }
 
+.list-doituong.active {
+    display: block;
+    animation: fade-matches-in .7s;
+}
+
+.list-doituong.unactive {
+    display: none;
+}
+
 .view-image {
     position: absolute;
 }
@@ -237,8 +329,8 @@ export default {
 }
 
 .detail-doituong {
-    width: 420px;
-    height: 700px;
+    width: 380px;
+    height: 620px;
     border-radius: 4px;
     margin-top: .5rem;
     overflow: hidden;
@@ -248,7 +340,7 @@ export default {
 
 .detail-doituong img {
     width: 100%;
-    height: 700px;
+    height: 620px;
     position: absolute;
     top: 0;
     left: 0;
@@ -260,5 +352,16 @@ export default {
 
 .unactive-image-matches {
     display: none;
+}
+
+@keyframes fade-matches-in {
+    0%{
+        opacity: 0;
+        transform: scale(.6);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
 <div class="layout-home">
     <Navigation />
-    <transition name="route" mode="out-in">
+    <!-- <transition name="route" mode="out-in">
         <router-view v-slot="{ Component }">
             <component :is="Component"></component>
         </router-view>
-    </transition>
+    </transition> -->
 
-    <!-- <router-view></router-view> -->
+    <router-view></router-view>
 </div>
 </template>
 
