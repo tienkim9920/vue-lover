@@ -95,6 +95,9 @@
 import VFacebookLogin from 'vue-facebook-login-component-next'
 import SignIn from '../component/intro/SignIn.vue'
 import SignUp from '../component/intro/SignUp.vue'
+import {
+    useRouter
+} from 'vue-router'
 
 export default {
     name: "Intro",
@@ -105,6 +108,8 @@ export default {
     },
 
     setup() {
+        const router = useRouter()
+
         const loginFacebook = () => {
             const user = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
             console.log(user)
@@ -114,7 +119,7 @@ export default {
             document.getElementsByClassName('modal-backdrop')[1].setAttribute("style", 
                 "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
 
-            this.$router.push({ path: '/home' })
+            router.push('/home')
         }
         return {
             loginFacebook
