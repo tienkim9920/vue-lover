@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="another-body">
-        <a class="another-see-likes">See who likes you</a>
+        <a class="another-see-likes">Upgrade to Gold</a>
         <div class="h5-another-body">
             <h5>Upgrade to Gold to see people who already like you.</h5>
         </div>
@@ -45,7 +45,7 @@ export default {
             gsap.to(el, {
                 opacity: 1,
                 y: 0,
-                duration: 1.2,
+                duration: 0.4,
                 onComplete: done,
                 delay: el.dataset.index * 0.2
             })

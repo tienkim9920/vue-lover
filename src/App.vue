@@ -277,7 +277,7 @@ body {
     }
 
     .another-see-likes {
-        left: 25% !important;
+        left: 24% !important;
         top: 82% !important;
     }
 
@@ -295,6 +295,52 @@ body {
 
     .another-header{
         padding: .9rem 1rem !important;
+    }
+
+    /* Another */
+
+
+
+
+    /* Messages Content */
+
+    .wrapper-content-chat{
+        grid-template-columns: auto !important;
+    }
+
+    .content-information-right{
+        display: none !important;
+    }
+
+    .txt-footer-chat input{
+        width: 100% !important;
+    }
+
+    .input-chat-left{
+        border-bottom: 1px solid #e4e4e4 !important;
+    }
+
+    .header-chat-left{
+        padding: 0 !important;
+    }
+
+    .message-send {
+        border-radius: 2vw 2vw .2vw 2vw !important;
+    }
+    .message-received {
+        border-radius: 2vw 2vw 2vw .2vw !important;
+    }
+
+    .body-chat-left {
+        height: 505px !important;
+    }
+
+    .redirect-message{
+        display: none !important;
+    }
+
+    .redirect-message-mobile{
+        display: block !important;
     }
 
 }

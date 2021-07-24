@@ -4,7 +4,7 @@
         <router-link to='/home'><i class="fa fa-home"></i></router-link>
     </li>
     <li class="li-nav-mobile">
-        <router-link to='/home/another'><i class="fa fa-heart"></i></router-link>
+        <router-link to='/home/match'><i class="fa fa-heart"></i></router-link>
     </li>
     <li class="li-nav-mobile">
         <router-link to='/home/message'><i class="fa fa-comment"></i></router-link>

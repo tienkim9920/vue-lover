@@ -25,11 +25,13 @@
             <div class="wrapper-image-user">
                 <router-link :to="'/home/message/' + '1'">
                     <img src="../../assets/avt2.jpg" alt="">
+                    <span class="name-in-image-user">Tiền Kim</span>
                 </router-link>
             </div>
             <div class="wrapper-image-user">
                 <router-link :to="'/home/message/' + '2'">
                     <img src="../../assets/avt3.jpg" alt="">
+                    <span class="name-in-image-user">Mỹ Hân</span>
                 </router-link>
             </div>
         </div>
@@ -220,6 +222,14 @@ export default {
 
 .wrapper-image-user {
     padding-top: .2rem;
+    position: relative;
+}
+
+.wrapper-image-user a .name-in-image-user{
+    color: #fff;
+    position: absolute;
+    top: 80%;
+    left: 5%;
 }
 
 .wrapper-image-user img {

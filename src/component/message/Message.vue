@@ -1,55 +1,51 @@
 <template>
 <div class="wrapper-content-chat">
-    <div class="content-chat-left">
-        <div class="header-chat-left">
-            <router-link :to="'/home/profile/' + '1'">
-                <div class="title-header-chat-left">
-                    <img src="../../assets/avt2.jpg" alt="">
-                    <h4>Tiền Kim</h4>
-                </div>
-            </router-link>
-            <div>
-                <router-link to="/home">
-                    <i class="fa fa-close icon-header-chat-left"></i>
+    <transition name="show" appear>
+        <div class="content-chat-left">
+            <div class="header-chat-left">
+                <router-link :to="'/home/profile/' + '1'">
+                    <div class="title-header-chat-left">
+                        <img src="../../assets/avt2.jpg" alt="">
+                        <h4>Tiền Kim</h4>
+                    </div>
                 </router-link>
-            </div>
-        </div>
-        <div class="body-chat-left">
-            <div class="chat-message-send">
-                <div class="message-send">Chào em</div>
-            </div>
-            <div class="chat-message-received">
-                <img src="../../assets/avt2.jpg" alt="">
-                <div class="message-received">Chào anh</div>
-            </div>
-            <div class="chat-message-received">
-                <img src="../../assets/avt2.jpg" alt="">
-                <div class="message-received">Chào anh</div>
-            </div>
-            <div class="chat-message-received">
-                <img src="../../assets/avt2.jpg" alt="">
-                <div class="message-received">Chào anh</div>
-            </div>
-            <div class="chat-message-send">
-                <div class="message-send">Chào em</div>
-            </div>
-        </div>
-        <div class="footer-chat-left">
-            <div class="input-chat-left">
-                <div class="txt-footer-chat">
-                    <input type="text" placeholder="Type a message">
+                <div class="redirect-message">
+                    <router-link to="/home">
+                        <i class="fa fa-close icon-header-chat-left"></i>
+                    </router-link>
                 </div>
-                <div class="send-footer-chat">
-                    <div>
-                        <i class="fa fa-smile-o" style="font-size:24px"></i>
-                    </div>
-                    <div style="margin-top: .2rem">
-                        <a>SEND</a>
-                    </div>
+                <div class="redirect-message-mobile">
+                    <router-link to="/home/message">
+                        <i class="fa fa-close icon-header-chat-left"></i>
+                    </router-link>
                 </div>
             </div>
+            <div class="body-chat-left">
+                <div class="chat-message-send">
+                    <div class="message-send">Chào em</div>
+                </div>
+                <div class="chat-message-received">
+                    <img src="../../assets/avt2.jpg" alt="">
+                    <div class="message-received">Chào anh</div>
+                </div>
+            </div>
+            <div class="footer-chat-left">
+                <div class="input-chat-left">
+                    <div class="txt-footer-chat">
+                        <input type="text" placeholder="Type a message">
+                    </div>
+                    <div class="send-footer-chat">
+                        <div>
+                            <i class="fa fa-smile-o" style="font-size:24px"></i>
+                        </div>
+                        <div style="margin-top: .2rem">
+                            <a>SEND</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </transition>
     <div class="content-information-right">
         <Profile />
     </div>
@@ -74,7 +70,25 @@ export default {
 </script>
 
 <style>
-.header-chat-left a{
+.show-enter-from {
+    transform: translateY(500px);
+    opacity: 0;
+}
+
+.show-enter-to {
+    transform: translateY(0px);
+    opacity: 1;
+}
+
+.show-enter-active {
+    transition: all .3s ease-in;
+}
+
+.redirect-message-mobile {
+    display: none;
+}
+
+.header-chat-left a {
     cursor: pointer;
     text-decoration: none;
     color: #323232;
@@ -162,6 +176,7 @@ export default {
 .body-chat-left {
     padding: .5rem 1rem 1rem 1rem;
     height: 530px;
+    overflow-y: scroll;
 }
 
 .header-chat-left {
