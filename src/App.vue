@@ -332,7 +332,7 @@ body {
     }
 
     .body-chat-left {
-        height: 505px !important;
+        height: 499px!important;
     }
 
     .redirect-message{
