@@ -235,9 +235,9 @@ body {
     }
 
     .group-doituong {
-        height: 650px !important;
+        height: 670px !important;
         overflow-y: scroll !important;
-        padding: .6rem .2rem;
+        padding: .3rem .2rem;
         background-color: #f3f3f3 !important;
     }
 
@@ -245,9 +245,9 @@ body {
         display: flex !important;
         justify-content: space-evenly;
         background-color: #fff;
-        padding: .8rem 0 !important;
+        padding: 1rem 0 1.3rem 0 !important;
         position: fixed;
-        top: 93%;
+        top: 90.5%;
         width: 100%;
         z-index: 9999;
         /* border-top: 1px solid #e2e2e2; */
@@ -262,6 +262,10 @@ body {
 
 
     /* Another */
+    .another-body{
+        background-color: #fdfdfd !important;
+    }
+    
     .grid-another-body {
         grid-template-columns: repeat(2, minmax(100px, 1fr)) !important;
         gap: 15px;
@@ -274,6 +278,7 @@ body {
 
     .another-see-likes {
         left: 25% !important;
+        top: 82% !important;
     }
 
     .like-another h4{
