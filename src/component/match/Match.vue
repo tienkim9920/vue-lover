@@ -1,4 +1,10 @@
 <template>
+<div class="header-matches-mobile">
+    <div class="header-logo">
+        <img src="../../assets/icon.png" alt="">
+        <h1>Lover</h1>
+    </div>
+</div>
 <div class="group-doituong">
     <div v-for="(user, index) in users" :key="index">
         <div v-bind:class="(showUser === index) ? 'list-doituong active' : 'list-doituong unactive'">
@@ -6,19 +12,31 @@
                 <div v-for="item in user.image" :key="item.id">
                     <img v-bind:class="(showImage === item.id) ? 'active-image-matches' : 'unactive-image-matches'" :src="item.src" alt="">
                 </div>
-            </div>
-            <div class="count-image-line" v-bind:style="{ gridTemplateColumns: `repeat(${user.image.length}, minmax(60px, 1fr))` }">
-                <div v-for="item in user.image" :key="item.id" v-bind:class="(showImage === item.id) ? 'active-image-line' : 'unactive-image-line'">
+                <div class="count-image-line" v-bind:style="{ gridTemplateColumns: `repeat(${user.image.length}, minmax(60px, 1fr))` }">
+                    <div v-for="item in user.image" :key="item.id" v-bind:class="(showImage === item.id) ? 'active-image-line' : 'unactive-image-line'">
+                    </div>
                 </div>
-            </div>
-            <a class="view-image arrow-next" v-if="showImage < user.image.length" @click="nextImage">
-                <i class="fa fa-chevron-right" style="font-size: 26px; color: #fff"></i></a>
-            <a class="view-image arrow-prev" v-if="showImage !== 1" @click="prevImage">
-                <i class="fa fa-chevron-left" style="font-size: 26px; color: #fff"></i></a>
-            <div class="group-option-user">
-                <i class="fa fa-close icon-option-delete" @click="clickUnlike()" style="color: #FE5266"></i>
-                <i class="fa fa-star icon-option-star" style="color: #36CAF6"></i>
-                <i class="fa fa-heart icon-option-tym" @click="clickLike()" style="color: #23EBC2"></i>
+
+                <div class="group-matches-name-nav-mobile">
+                    <span>Tiền Kim</span>
+                    <router-link :to="'/home/profile/' + '1'">
+                        <i class="fa fa-address-book" style="font-size:32px"></i>
+                    </router-link>
+                </div>
+
+                <div class="line-matches">
+                    <div class="line-matches-child"></div>
+                </div>
+
+                <a class="view-image arrow-next" v-if="showImage < user.image.length" @click="nextImage">
+                    <i class="fa fa-chevron-right" style="font-size: 26px; color: #fff"></i></a>
+                <a class="view-image arrow-prev" v-if="showImage !== 1" @click="prevImage">
+                    <i class="fa fa-chevron-left" style="font-size: 26px; color: #fff"></i></a>
+                <div class="group-option-user">
+                    <i class="fa fa-close icon-option-delete" @click="clickUnlike()" style="color: #FE5266"></i>
+                    <i class="fa fa-star icon-option-star" style="color: #36CAF6"></i>
+                    <i class="fa fa-heart icon-option-tym" @click="clickLike()" style="color: #23EBC2"></i>
+                </div>
             </div>
             <div class="group-matches-name">
                 <span>Tiền Kim</span>
@@ -220,7 +238,7 @@ export default {
 
 .group-option-user {
     position: absolute;
-    top: 73%;
+    top: 85%;
     left: 16%;
 }
 
@@ -341,9 +359,9 @@ export default {
 .detail-doituong img {
     width: 100%;
     height: 620px;
-    position: absolute;
-    top: 0;
-    left: 0;
+    /* position: absolute; */
+    /* top: 0;
+    left: 0; */
 }
 
 .active-image-matches {
@@ -355,11 +373,12 @@ export default {
 }
 
 @keyframes fade-matches-in {
-    0%{
+    0% {
         opacity: 0;
         transform: scale(.6);
     }
-    100%{
+
+    100% {
         opacity: 1;
         transform: scale(1);
     }

@@ -1,4 +1,5 @@
 <template>
+<NavMobile />
 <div class="layout-home">
     <Navigation />
     <!-- <transition name="route" mode="out-in">
@@ -13,11 +14,13 @@
 
 <script>
 import Navigation from '../component/share/Navigation.vue'
+import NavMobile from '../component/share/NavMobile.vue'
 
 export default {
     name: 'Home',
     components: {
-        Navigation
+        Navigation,
+        NavMobile
     },
     setup() {
 
