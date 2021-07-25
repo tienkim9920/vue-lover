@@ -34,6 +34,8 @@
                 <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod, provident recusandae. Quos expedita id, cumque aliquam ducimus ea culpa praesentium odit, magni, at fugiat vitae quod saepe et? Natus, error!</span>
             </div>
             <div class="btn-edit-setting">
+                <router-link to="/home/setting/account">Settings</router-link>
+                &nbsp;
                 <router-link to="/home/setting/edit">Edit Info</router-link>
             </div>
         </div>

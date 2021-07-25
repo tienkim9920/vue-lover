@@ -1,7 +1,7 @@
 <template>
 <div class="layout-profile">
     <transition name="show" appear>
-        <div class="wrapper-profile-user" style="padding-bottom: 5rem">
+        <div class="wrapper-profile-user" style="padding-bottom: 5rem; background-color: #f8f8f8">
             <div class="header-edit">
                 <span>Settings</span>
                 <router-link to="/home/setting" class="close-edit">Done</router-link>

@@ -211,7 +211,6 @@ export default {
 }
 
 .body-image-edit {
-    margin-top: 3rem;
     padding: .6rem .8rem;
     background-color: #f5f5f5;
 }
@@ -230,8 +229,6 @@ export default {
 }
 
 .header-edit {
-    position: fixed;
-    width: 24%;
     padding: .6rem 0;
     font-size: 1.2rem;
     text-align: center;
@@ -242,8 +239,8 @@ export default {
 
 .close-edit {
     position: absolute;
-    top: 25%;
-    left: 90%;
+    top: 1.5%;
+    left: 87%;
     font-size: 1rem;
     color: #FD546C;
     cursor: pointer;
@@ -256,15 +253,16 @@ export default {
 
 @media only screen and (max-width: 600px) {
     .header-edit {
+        position: fixed !important;
         width: 100%;
     }
 
     .close-edit {
+        top: 25% !important;
         left: 86% !important;
     }
 
     .body-image-edit {
-        margin-top: 0rem !important;
         padding: 4rem .8rem .6rem .8rem !important;
     }
 }
