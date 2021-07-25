@@ -1,97 +1,120 @@
 <template>
 <div class="layout-profile">
-    <div class="wrapper-profile-user">
-        <div class="header-edit">
-            <span>Edit Info</span>
-            <router-link to="/home" class="close-edit">Done</router-link>
+    <transition name="show" appear>
+        <div class="wrapper-profile-user" style="padding-bottom: 5rem">
+            <div class="header-edit">
+                <span>Edit Info</span>
+                <router-link to="/home/setting" class="close-edit">Done</router-link>
+            </div>
+            <div class="body-image-edit">
+                <div class="grid-image-edit">
+                    <div class="box-image-edit">
+                        <div class="position-edit">
+                            <div>
+                                <img src="../../assets/avt2.jpg" alt="">
+                            </div>
+
+                            <i class="fa fa-close"></i>
+                        </div>
+                    </div>
+                    <div class="box-image-edit">
+                        <div class="position-edit">
+                            <div>
+                                <img src="../../assets/avt2.jpg" alt="">
+                            </div>
+                            <i class="fa fa-close"></i>
+                        </div>
+                    </div>
+                    <div class="box-image-edit">
+                        <div class="position-edit">
+                            <div>
+                                <img src="../../assets/avt2.jpg" alt="">
+                            </div>
+                            <i class="fa fa-close"></i>
+                        </div>
+                    </div>
+                    <div class="box-image-edit">
+                        <div class="position-edit">
+                            <div>
+                                <img src="../../assets/avt2.jpg" alt="">
+                            </div>
+                            <i class="fa fa-close"></i>
+                        </div>
+                    </div>
+                    <div class="box-image-edit">
+                        <div class="position-edit">
+                            <div>
+                                <img src="../../assets/avt2.jpg" alt="">
+                            </div>
+                            <i class="fa fa-close"></i>
+                        </div>
+                    </div>
+                    <div class="box-image-edit">
+                        <div class="position-edit">
+                            <div>
+                                <img src="../../assets/avt2.jpg" alt="">
+                            </div>
+                            <i class="fa fa-close"></i>
+                        </div>
+                    </div>
+                    <div class="box-image-edit">
+                        <div class="position-edit">
+                            <div class="img-edit-unactive">
+                                <!-- <img src="../../assets/avt2.jpg" alt=""> -->
+                            </div>
+                            <i class="fa fa-plus edit-plus"></i>
+                        </div>
+                    </div>
+                    <div class="box-image-edit">
+                        <div class="position-edit">
+                            <div class="img-edit-unactive">
+                                <!-- <img src="../../assets/avt2.jpg" alt=""> -->
+                            </div>
+                            <i class="fa fa-plus edit-plus"></i>
+                        </div>
+                    </div>
+                    <div class="box-image-edit">
+                        <div class="position-edit">
+                            <div class="img-edit-unactive">
+                                <!-- <img src="../../assets/avt2.jpg" alt=""> -->
+                            </div>
+                            <i class="fa fa-plus edit-plus"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-add-image-edit">
+                    <a>ADD MEDIA</a>
+                </div>
+            </div>
+            <div class="body-about-edit">
+                <div class="title-body-edit">
+                    Full Name
+                </div>
+                <input type="text" class="input-body-edit" placeholder="Add full name">
+            </div>
+            <div class="body-about-edit">
+                <div class="title-body-edit">
+                    Address
+                </div>
+                <input type="text" class="input-body-edit" placeholder="Add address">
+            </div>
+            <div class="body-about-edit">
+                <div class="title-body-edit">
+                    Gender
+                </div>
+                <div class="link-body-edit">
+                    <a class="a-gender">Men</a>
+                    <i class="fa fa-chevron-right" style="color: gray; margin-top: .25rem"></i>
+                </div>
+            </div>
+            <div class="body-about-edit">
+                <div class="title-body-edit">
+                    About Tiền Kim
+                </div>
+                <input type="text" class="input-body-edit" placeholder="Add about you">
+            </div>
         </div>
-        <div class="body-image-edit">
-            <div class="grid-image-edit">
-                <div class="box-image-edit">
-                    <div class="position-edit">
-                        <div>
-                            <img src="../../assets/avt2.jpg" alt="">
-                        </div>
-
-                        <i class="fa fa-close"></i>
-                    </div>
-                </div>
-                <div class="box-image-edit">
-                    <div class="position-edit">
-                        <div>
-                            <img src="../../assets/avt2.jpg" alt="">
-                        </div>
-                        <i class="fa fa-close"></i>
-                    </div>
-                </div>
-                <div class="box-image-edit">
-                    <div class="position-edit">
-                        <div>
-                            <img src="../../assets/avt2.jpg" alt="">
-                        </div>
-                        <i class="fa fa-close"></i>
-                    </div>
-                </div>
-                <div class="box-image-edit">
-                    <div class="position-edit">
-                        <div>
-                            <img src="../../assets/avt2.jpg" alt="">
-                        </div>
-                        <i class="fa fa-close"></i>
-                    </div>
-                </div>
-                <div class="box-image-edit">
-                    <div class="position-edit">
-                        <div>
-                            <img src="../../assets/avt2.jpg" alt="">
-                        </div>
-                        <i class="fa fa-close"></i>
-                    </div>
-                </div>
-                <div class="box-image-edit">
-                    <div class="position-edit">
-                        <div>
-                            <img src="../../assets/avt2.jpg" alt="">
-                        </div>
-                        <i class="fa fa-close"></i>
-                    </div>
-                </div>
-                <div class="box-image-edit">
-                    <div class="position-edit">
-                        <div class="img-edit-unactive">
-                            <!-- <img src="../../assets/avt2.jpg" alt=""> -->
-                        </div>
-                        <i class="fa fa-plus edit-plus"></i>
-                    </div>
-                </div>
-                <div class="box-image-edit">
-                    <div class="position-edit">
-                        <div class="img-edit-unactive">
-                            <!-- <img src="../../assets/avt2.jpg" alt=""> -->
-                        </div>
-                        <i class="fa fa-plus edit-plus"></i>
-                    </div>
-                </div>
-                <div class="box-image-edit">
-                    <div class="position-edit">
-                        <div class="img-edit-unactive">
-                            <!-- <img src="../../assets/avt2.jpg" alt=""> -->
-                        </div>
-                        <i class="fa fa-plus edit-plus"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="btn-add-image-edit">
-                <a>ADD MEDIA</a>
-            </div>
-
-            <div class="about-edit">
-                
-            </div>
-        </div>
-
-    </div>
+    </transition>
 </div>
 </template>
 
@@ -105,12 +128,43 @@ export default {
 </script>
 
 <style>
-.btn-add-image-edit{
+.link-body-edit {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: .6rem 1rem;
+}
+
+.a-gender {
+    font-family: 'Raleway', sans-serif;
+    color: gray;
+    text-decoration: none;
+}
+
+.input-body-edit {
+    width: 100%;
+    padding: .6rem 1rem;
+    outline: none;
+    border: none;
+    font-family: 'Raleway', sans-serif;
+}
+
+.body-about-edit {
+    margin-top: 2rem;
+}
+
+.title-body-edit {
+    padding: 0 1rem;
+    color: gray;
+    text-transform: uppercase;
+}
+
+.btn-add-image-edit {
     text-align: center;
     padding: 1.5rem 0 1rem 0;
 }
 
-.btn-add-image-edit a{
+.btn-add-image-edit a {
     text-decoration: none;
     color: #fff !important;
     text-transform: uppercase;
@@ -123,7 +177,7 @@ export default {
     box-shadow: 0 0 0.2em 0.2em rgba(170, 170, 170, 0.25);
 }
 
-.btn-add-image-edit a:hover{
+.btn-add-image-edit a:hover {
     background-color: #ff405c;
 }
 
@@ -162,7 +216,7 @@ export default {
     background-color: #f5f5f5;
 }
 
-.img-edit-unactive{
+.img-edit-unactive {
     width: 100%;
     height: 140px;
     border-radius: .5rem;
@@ -183,6 +237,7 @@ export default {
     text-align: center;
     border-bottom: 1px solid #e4e4e4;
     background-color: #fff;
+    z-index: 999;
 }
 
 .close-edit {
@@ -195,13 +250,22 @@ export default {
     text-decoration: none;
 }
 
-.close-edit:hover{
+.close-edit:hover {
     color: #FD546C;
 }
 
 @media only screen and (max-width: 600px) {
     .header-edit {
         width: 100%;
+    }
+
+    .close-edit {
+        left: 86% !important;
+    }
+
+    .body-image-edit {
+        margin-top: 0rem !important;
+        padding: 4rem .8rem .6rem .8rem !important;
     }
 }
 </style>

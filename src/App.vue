@@ -277,7 +277,7 @@ body {
     }
 
     .another-see-likes {
-        left: 24% !important;
+        left: 25.5% !important;
         top: 82% !important;
     }
 
@@ -295,6 +295,10 @@ body {
 
     .another-header{
         padding: .9rem 1rem !important;
+    }
+
+    .skeleton-wrapper-another {
+        height: 210px !important;
     }
 
     /* Another */
@@ -340,6 +344,50 @@ body {
     }
 
     .redirect-message-mobile{
+        display: block !important;
+    }
+
+    /* Message Content */
+
+
+    /* Profile ID */
+
+    .layout-profile {
+        display: block !important;
+    }
+
+    .wrapper-profile-user{
+        width: 100% !important;
+        height: 700px !important;
+        background-color: #f8f8f8 !important;
+    }
+
+    .active-image-matches{
+        height: 560px !important;
+    }
+
+    .profile-header {
+        height: 56% !important;
+    }
+
+    .profile-bio{
+        margin-bottom: 2.5rem !important;
+    }
+
+    .title-profile-body h3{
+        margin-top: 1.5rem !important;
+    }
+
+    /* Profile ID */
+
+    
+    /* Setting */
+
+    .setting-laptop{
+        display: none !important;
+    }
+
+    .setting-mobile{
         display: block !important;
     }
 

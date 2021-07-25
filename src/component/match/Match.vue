@@ -322,23 +322,23 @@ export default {
     display: none;
 }
 
-.view-image {
-    position: absolute;
-}
-
 .arrow-next {
     top: 45%;
-    left: 92%;
+    left: 87%;
+    padding: .5rem .4rem .3rem .7rem;
 }
 
 .arrow-prev {
     top: 45%;
     left: 5%;
+    padding: .5rem .7rem .3rem .4rem;
 }
 
 .view-image {
+    position: absolute;
     text-decoration: none;
     cursor: pointer;
+    background-color: rgb(240, 240, 240, .3);
 }
 
 .group-doituong {
