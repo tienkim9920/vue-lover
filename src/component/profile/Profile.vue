@@ -28,10 +28,6 @@
                 <i class="fa fa-user" style="font-size:24px; margin-left: .1rem"></i>
                 <span style="margin-left: .9rem; margin-top: .1rem">Men</span>
             </div>
-            <div class="detail-profile-body d-flex">
-                <i class="fa fa-map-marker" style="font-size:24px; margin-left: .2rem"></i>
-                <span style="margin-left: .7rem; margin-top: .1rem">484 kilometers away</span>
-            </div>
         </div>
         <div class="profile-bio">
             <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod, provident recusandae. Quos expedita id, cumque aliquam ducimus ea culpa praesentium odit, magni, at fugiat vitae quod saepe et? Natus, error!</span>
@@ -124,5 +120,28 @@ export default {
 
 .img-profile-header img {
     width: 100%;
+}
+
+@media only screen and (max-width: 600px){
+    .arrow-next{
+        top: 50% !important;
+    }
+
+    .arrow-prev{
+        top: 50% !important;
+    }
+
+    .profile-header {
+        height: 540px !important;
+    }
+
+    .profile-bio {
+        padding: 1.3rem 2rem 2.2rem 2rem !important;
+    }
+
+    .profile-body {
+        border-bottom: 1px solid #e4e4e4;
+        padding: 1rem 1rem !important;
+    }
 }
 </style>

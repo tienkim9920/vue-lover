@@ -10,6 +10,7 @@ import AnotherMatch from "../component/another/AnotherMatch.vue"
 import Setting from "../component/setting/Setting.vue"
 import Edit from "../component/setting/Edit.vue"
 import Account from "../component/setting/Account.vue"
+import Gender from "../component/setting/Gender.vue"
 
 const routes = [
     {
@@ -51,6 +52,10 @@ const routes = [
             {
                 path: 'setting/edit',
                 component: Edit
+            },
+            {
+                path: 'setting/edit/Gender',
+                component: Gender
             },
             {
                 path: 'setting/account',

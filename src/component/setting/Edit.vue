@@ -102,10 +102,10 @@
                 <div class="title-body-edit">
                     Gender
                 </div>
-                <div class="link-body-edit">
+                <router-link to="/home/setting/edit/gender" class="link-body-edit">
                     <a class="a-gender">Men</a>
                     <i class="fa fa-chevron-right" style="color: gray; margin-top: .25rem"></i>
-                </div>
+                </router-link>
             </div>
             <div class="body-about-edit">
                 <div class="title-body-edit">
@@ -133,6 +133,12 @@ export default {
     justify-content: space-between;
     background-color: #fff;
     padding: .6rem 1rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.a-gender:hover {
+    color: gray;
 }
 
 .a-gender {

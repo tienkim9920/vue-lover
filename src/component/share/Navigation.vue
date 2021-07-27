@@ -2,7 +2,7 @@
 <div class="navigation">
     <div class="fixed-nav-header">
         <div class="navigation-header">
-            <img src="../../assets/avt1.jpg" alt="">
+            <router-link to="/home"><img src="../../assets/avt1.jpg" alt=""></router-link>
             <router-link to="/home/setting">My Profile</router-link>
         </div>
         <div class="navigation-content">
