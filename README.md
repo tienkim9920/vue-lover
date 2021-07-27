@@ -9,7 +9,7 @@
 - TienKim
 
 ## ERD
-<img src="https://firebasestorage.googleapis.com/v0/b/todo-app-tienkim.appspot.com/o/diagram.PNG?alt=media&token=656d0b0c-0540-4257-a90a-3c024f50946b" />
+<img src="https://firebasestorage.googleapis.com/v0/b/todo-app-tienkim.appspot.com/o/ERD_Lover.PNG?alt=media&token=80c4aa7e-4c76-47cf-9c25-61d661e65f27" />
 
 ## USECASE
 <h3>* Khách Hàng</h3>
