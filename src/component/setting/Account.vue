@@ -25,7 +25,7 @@
                 <input type="text" class="input-body-edit" placeholder="">
             </div>
 
-            <div class="body-about-edit">
+            <div class="body-about-edit" v-if="sessionFB">
                 <div class="logout-account">
                     Logout
                 </div>
@@ -38,9 +38,19 @@
 <script>
 export default {
     name: 'Account',
+    data: () => {
+        return {
+            sessionFB: null
+        }
+    },
+    created(){
+        if (sessionStorage.getItem('fbssls_1188277554976347')){
+            this.sessionFB = true
+        }
+    },
     setup() {
 
-    },
+    }
 }
 </script>
 

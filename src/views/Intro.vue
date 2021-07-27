@@ -106,6 +106,13 @@ export default {
         SignIn,
         SignUp
     },
+    created(){
+
+        if (sessionStorage.getItem('fbssls_1188277554976347')){
+            this.$router.push('/home') 
+        }
+
+    },
 
     setup() {
         const router = useRouter()
