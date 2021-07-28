@@ -22,6 +22,9 @@ export default {
         Navigation,
         NavMobile
     },
+    created() {
+
+    },
     setup() {
 
     },

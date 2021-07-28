@@ -20,13 +20,13 @@
     <div class="container">
         <div class="intro-app">
             <h2>GET THE APP!</h2>
-            <p>Single people, listen up: if you're looking for love, want to start dating, or just keep it casual, 
-                you need to be on Lover. With over 55 billion matches made, it's the place to be to meet your next best match. 
+            <p>Single people, listen up: if you're looking for love, want to start dating, or just keep it casual,
+                you need to be on Lover. With over 55 billion matches made, it's the place to be to meet your next best match.
                 Let's be real, the dating landscape looks very different tody, as most people are meeting online.
                 With Lover, the world's most popular free dating app, you have millions of other single at your fingertips and they's all ready to meet someone like you.</p>
-            <p>There really is something for everyone on Lover. Want to get into a relationshop? You got it. 
+            <p>There really is something for everyone on Lover. Want to get into a relationshop? You got it.
                 Trying to find some new friend? Say no more. New kid on campus and looking to make the most of your college experience? Lover U's got you covered.
-                Lover isn't your average dating site - it;s the most diverse dating app, 
+                Lover isn't your average dating site - it;s the most diverse dating app,
                 where adults of all backgrounds and experience are invited to make connections, memories, and everything in between.
             </p>
         </div>
@@ -99,6 +99,8 @@ import {
     useRouter
 } from 'vue-router'
 
+import UserAPI from '../api/UserAPI'
+
 export default {
     name: "Intro",
     components: {
@@ -106,10 +108,10 @@ export default {
         SignIn,
         SignUp
     },
-    created(){
+    created() {
 
-        if (sessionStorage.getItem('fbssls_1188277554976347')){
-            this.$router.push('/home') 
+        if (sessionStorage.getItem('fbssls_1188277554976347')) {
+            this.$router.push('/home')
         }
 
     },
@@ -117,16 +119,55 @@ export default {
     setup() {
         const router = useRouter()
 
-        const loginFacebook = () => {
+        const loginFacebook = async () => {
+
+            // Get session by return server
             const user = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
-            console.log(user)
 
-            document.getElementsByClassName('modal-backdrop')[0].setAttribute("style", 
-                "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
-            document.getElementsByClassName('modal-backdrop')[1].setAttribute("style", 
-                "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+            // Save it in object
+            const fb = {
+                userID: user.userID,
+                accessToken: user.accessToken
+            }
 
-            router.push('/home')
+            // Implement call api checking facebook
+            const res = await UserAPI.facebook(fb)
+
+            if (res === 'Account exist') {
+                document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
+                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+                document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
+                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+
+                router.push('/home')
+            } else {
+
+                const body = {
+                    fullname: '',
+                    address: '',
+                    gender: '',
+                    bio: '',
+                    email: '',
+                    phone: '',
+                    password: '',
+                    userID: fb.userID,
+                    accessToken: fb.accessToken,
+                    image: []
+                }
+
+                const newUser = await UserAPI.addUser(body)
+
+                sessionStorage.setItem('idUser', newUser._id)
+
+                document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
+                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+                document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
+                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+
+                router.push('/home/setting/edit')
+
+            }
+
         }
         return {
             loginFacebook
@@ -169,29 +210,28 @@ export default {
     top: 2.5rem;
 } */
 
-
-.copyright{
+.copyright {
     font-family: 'Raleway', sans-serif;
     letter-spacing: .05rem;
     padding: 2rem;
     text-align: center;
 }
 
-.copyright a{
+.copyright a {
     color: #323232;
     text-decoration: none;
 }
 
-.intro-app{
+.intro-app {
     padding: 2rem 0 1rem 0;
     border-bottom: 1px solid #e2e2e2;
 }
 
-.intro-app h2{
+.intro-app h2 {
     padding-bottom: 1rem;
 }
 
-.intro-app p{
+.intro-app p {
     font-family: 'Raleway', sans-serif;
     letter-spacing: .05rem;
 }
@@ -397,23 +437,23 @@ export default {
         width: 100%;
     }
 
-    .v-facebook-login svg{
+    .v-facebook-login svg {
         margin-right: 0rem;
     }
 
-    .login-lover{
+    .login-lover {
         width: 100%;
     }
 
-    .intro-app p{
+    .intro-app p {
         font-size: .9rem;
     }
 
-    .copyright a{
+    .copyright a {
         font-size: 1rem;
     }
 
-    .modal-content{
+    .modal-content {
         margin-top: 3rem;
     }
 }
