@@ -112,7 +112,7 @@ export default {
 
         const fb = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
 
-        if (fb) {
+        if (fb !== null) {
             this.$router.push('/home')
         }
 
