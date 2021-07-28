@@ -110,7 +110,9 @@ export default {
     },
     created() {
 
-        if (sessionStorage.getItem('fbssls_1188277554976347')) {
+        const fb = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
+
+        if (fb.userID) {
             this.$router.push('/home')
         }
 
