@@ -42,6 +42,7 @@ export default {
         onLogOut() {
             sessionStorage.clear('idUser')
             sessionStorage.clear('fbssls_1188277554976347')
+            localStorage.clear('fblst_1188277554976347')
             this.$router.push('/')
         }
     },
@@ -55,5 +56,6 @@ export default {
     background-color: #fff;
     padding: .6rem 1rem;
     font-family: 'Raleway', sans-serif;
+    cursor: pointer;
 }
 </style>
