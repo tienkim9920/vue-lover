@@ -142,6 +142,7 @@ export default {
                     "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
 
                 router.push('/home')
+
             } else {
 
                 const body = {
