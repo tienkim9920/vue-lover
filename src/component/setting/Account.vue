@@ -27,7 +27,7 @@
 
             <div class="body-about-edit" v-if="sessionFB">
                 <div class="logout-account">
-                    Logout
+                    <v-facebook-login app-id="1188277554976347"></v-facebook-login>
                 </div>
             </div>
         </div>
@@ -43,8 +43,8 @@ export default {
             sessionFB: null
         }
     },
-    created(){
-        if (sessionStorage.getItem('fbssls_1188277554976347')){
+    created() {
+        if (sessionStorage.getItem('fbssls_1188277554976347')) {
             this.sessionFB = true
         }
     },
@@ -55,13 +55,11 @@ export default {
 </script>
 
 <style>
-
-.logout-account{
+.logout-account {
     color: gray;
     text-align: center;
     background-color: #fff;
     padding: .6rem 1rem;
     font-family: 'Raleway', sans-serif;
 }
-
 </style>
