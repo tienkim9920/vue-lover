@@ -95,9 +95,9 @@
 import VFacebookLogin from 'vue-facebook-login-component-next'
 import SignIn from '../component/intro/SignIn.vue'
 import SignUp from '../component/intro/SignUp.vue'
-// import {
-//     useRouter
-// } from 'vue-router'
+import {
+    useRouter
+} from 'vue-router'
 
 import UserAPI from '../api/UserAPI'
 
@@ -119,7 +119,7 @@ export default {
     },
 
     setup() {
-        // const router = useRouter()
+        const router = useRouter()
 
         const loginFacebook = async () => {
 
