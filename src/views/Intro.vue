@@ -129,7 +129,6 @@ export default {
             // Save it in object
             const fb = {
                 userID: user.userID,
-                accessToken: user.accessToken
             }
 
             console.log(fb)
@@ -158,7 +157,6 @@ export default {
                     phone: '',
                     password: '',
                     userID: fb.userID,
-                    accessToken: fb.accessToken,
                     image: []
                 }
 
