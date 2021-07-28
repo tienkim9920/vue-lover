@@ -44,7 +44,7 @@ export default {
         }
     },
     created() {
-        if (sessionStorage.getItem('fbssls_1188277554976347')) {
+        if (JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse !== null) {
             this.sessionFB = true
         }
     },
