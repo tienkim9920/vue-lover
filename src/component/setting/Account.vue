@@ -26,10 +26,7 @@
             </div>
 
             <div class="body-about-edit">
-                <div class="logout-account" v-if="sessionFB">
-                    <v-facebook-login app-id="1188277554976347" @logout="logoutFacebook"></v-facebook-login>
-                </div>
-                <div class="logout-account" v-if="!sessionFB" @click="onLogOut">
+                <div class="logout-account" @click="onLogOut">
                     Logout
                 </div>
             </div>
@@ -41,33 +38,13 @@
 <script>
 export default {
     name: 'Account',
-    data: () => {
-        return {
-            sessionFB: false,            
-        }
-    },
-    created() {
-        if (JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse !== null) {
-            this.sessionFB = true
-        }
-    },
     methods: {
-        onLogOut(){
+        onLogOut() {
             sessionStorage.clear('idUser')
+            sessionStorage.clear('fbssls_1188277554976347')
             this.$router.push('/')
         }
     },
-    setup() {
-
-        const logoutFacebook = () => {
-            sessionStorage.clear('idUser')
-        }
-
-        return {
-            logoutFacebook
-        }
-
-    }
 }
 </script>
 
