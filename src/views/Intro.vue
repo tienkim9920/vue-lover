@@ -110,9 +110,9 @@ export default {
     },
     created() {
 
-        const fb = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
+        const fb = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347'))
 
-        if (fb !== null) {
+        if (fb.authResponse !== null) {
             this.$router.push('/home')
         }
 
@@ -139,41 +139,41 @@ export default {
 
             console.log(res)
 
-            // if (res === 'Account exist') {
-            //     document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
-            //         "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
-            //     document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
-            //         "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+            if (res === 'Account exist') {
+                document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
+                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+                document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
+                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
 
-            //     router.push('/home')
+                router.push('/home')
 
-            // } else {
+            } else {
 
-            //     const body = {
-            //         fullname: '',
-            //         address: '',
-            //         gender: '',
-            //         bio: '',
-            //         email: '',
-            //         phone: '',
-            //         password: '',
-            //         userID: fb.userID,
-            //         accessToken: fb.accessToken,
-            //         image: []
-            //     }
+                const body = {
+                    fullname: '',
+                    address: '',
+                    gender: '',
+                    bio: '',
+                    email: '',
+                    phone: '',
+                    password: '',
+                    userID: fb.userID,
+                    accessToken: fb.accessToken,
+                    image: []
+                }
 
-            //     const newUser = await UserAPI.addUser(body)
+                const newUser = await UserAPI.addUser(body)
 
-            //     sessionStorage.setItem('idUser', newUser._id)
+                sessionStorage.setItem('idUser', newUser._id)
 
-            //     document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
-            //         "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
-            //     document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
-            //         "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+                document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
+                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+                document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
+                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
 
-            //     router.push('/home/setting/edit')
+                router.push('/home/setting/edit')
 
-            // }
+            }
 
         }
         return {
