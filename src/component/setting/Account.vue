@@ -25,9 +25,12 @@
                 <input type="text" class="input-body-edit" placeholder="">
             </div>
 
-            <div class="body-about-edit" v-if="sessionFB">
-                <div class="logout-account">
-                    <v-facebook-login app-id="1188277554976347"></v-facebook-login>
+            <div class="body-about-edit">
+                <div class="logout-account" v-if="sessionFB">
+                    <v-facebook-login app-id="1188277554976347" @logout="logoutFacebook"></v-facebook-login>
+                </div>
+                <div class="logout-account" v-if="!sessionFB" @click="onLogOut">
+                    Logout
                 </div>
             </div>
         </div>
@@ -40,7 +43,7 @@ export default {
     name: 'Account',
     data: () => {
         return {
-            sessionFB: null
+            sessionFB: false,            
         }
     },
     created() {
@@ -48,7 +51,21 @@ export default {
             this.sessionFB = true
         }
     },
+    methods: {
+        onLogOut(){
+            sessionStorage.clear('idUser')
+            this.$router.push('/')
+        }
+    },
     setup() {
+
+        const logoutFacebook = () => {
+            sessionStorage.clear('idUser')
+        }
+
+        return {
+            logoutFacebook
+        }
 
     }
 }

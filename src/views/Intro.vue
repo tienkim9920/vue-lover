@@ -110,9 +110,7 @@ export default {
     },
     created() {
 
-        const fb = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347'))
-
-        if (fb.authResponse !== null) {
+        if (sessionStorage.getItem('idUser')) {
             this.$router.push('/home')
         }
 
@@ -138,11 +136,13 @@ export default {
 
             console.log(res)
 
-            if (res === 'Account exist') {
+            if (res.msg === 'Account exist') {
                 document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
                     "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
                 document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
                     "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+
+                sessionStorage.setItem('idUser', res.userID)
 
                 router.push('/home')
 
