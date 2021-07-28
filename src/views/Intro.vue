@@ -132,44 +132,48 @@ export default {
                 accessToken: user.accessToken
             }
 
+            console.log(fb)
+
             // Implement call api checking facebook
             const res = await UserAPI.facebook(fb)
 
-            if (res === 'Account exist') {
-                document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
-                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
-                document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
-                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+            console.log(res)
 
-                router.push('/home')
+            // if (res === 'Account exist') {
+            //     document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
+            //         "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+            //     document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
+            //         "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
 
-            } else {
+            //     router.push('/home')
 
-                const body = {
-                    fullname: '',
-                    address: '',
-                    gender: '',
-                    bio: '',
-                    email: '',
-                    phone: '',
-                    password: '',
-                    userID: fb.userID,
-                    accessToken: fb.accessToken,
-                    image: []
-                }
+            // } else {
 
-                const newUser = await UserAPI.addUser(body)
+            //     const body = {
+            //         fullname: '',
+            //         address: '',
+            //         gender: '',
+            //         bio: '',
+            //         email: '',
+            //         phone: '',
+            //         password: '',
+            //         userID: fb.userID,
+            //         accessToken: fb.accessToken,
+            //         image: []
+            //     }
 
-                sessionStorage.setItem('idUser', newUser._id)
+            //     const newUser = await UserAPI.addUser(body)
 
-                document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
-                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
-                document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
-                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+            //     sessionStorage.setItem('idUser', newUser._id)
 
-                router.push('/home/setting/edit')
+            //     document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
+            //         "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+            //     document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
+            //         "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
 
-            }
+            //     router.push('/home/setting/edit')
+
+            // }
 
         }
         return {
