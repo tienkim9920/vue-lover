@@ -20,7 +20,7 @@
                 <div class="group-matches-name-nav-mobile">
                     <span>Tiền Kim</span>
                     <router-link :to="'/home/profile/' + '1'">
-                        <i class="fa fa-address-book" style="font-size:32px"></i>
+                        <i class="fa fa-address-book" style="font-size:32px; color: #FE5A62"></i>
                     </router-link>
                 </div>
 

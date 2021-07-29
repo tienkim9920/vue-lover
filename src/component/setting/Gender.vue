@@ -10,13 +10,13 @@
                 <div class="title-body-edit">
                     Option
                 </div>
-                <div class="link-body-edit" @click="changeGender('male')">
+                <div class="link-body-edit" @click="changeGender('Male')">
                     <a class="a-gender">Men</a>
-                    <i class="fa fa-check icon-check-gender" v-if="gender === 'male'"></i>
+                    <i class="fa fa-check icon-check-gender" v-if="gender === 'Male'"></i>
                 </div>
-                <div class="link-body-edit" @click="changeGender('female')" style="border-top: 1px solid #f8f8f8">
+                <div class="link-body-edit" @click="changeGender('Female')" style="border-top: 1px solid #f8f8f8">
                     <a class="a-gender">Female</a>
-                    <i class="fa fa-check icon-check-gender" v-if="gender === 'female'"></i>
+                    <i class="fa fa-check icon-check-gender" v-if="gender === 'Female'"></i>
                 </div>
             </div>
         </div>
@@ -25,22 +25,47 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import UserAPI from '../../api/UserAPI'
+// import { ref } from 'vue'
 
 export default {
     name: 'Gender',
+    data: () => {
+        return {
+            gender: ''
+        }
+    },
+    async created(){
+        const user = await UserAPI.detail(sessionStorage.getItem('idUser'))
+
+        this.gender = user.gender
+    },
+    methods: {
+        async changeGender(value) {
+            this.gender = value
+
+            const body = {
+                _id: sessionStorage.getItem('idUser'),
+                gender: value
+            }
+
+            const user = await UserAPI.gender(body)
+
+            console.log(user)
+        }
+    },
     setup() {
         
-        const gender = ref('male')
+        // const gender = ref('male')
 
-        const changeGender = (value) => {
-            gender.value = value
-        }
+        // const changeGender = (value) => {
+        //     gender.value = value
+        // }
 
-        return {
-            gender,
-            changeGender
-        }
+        // return {
+        //     gender,
+        //     changeGender
+        // }
         
     },
 }

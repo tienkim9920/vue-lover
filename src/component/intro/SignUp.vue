@@ -12,20 +12,30 @@
                 </div>
             </div>
             <div>
-                <div class="text-center error" >
+                <div class="text-center error">
                     * Note: Please Enter Full Infomation!
                 </div>
+                <transition name="text" appear v-if="success">
+                    <div class="text-center text-success">
+                        * You have been Sign Up Success!
+                    </div>
+                </transition>
+                <transition name="text" appear v-if="existed">
+                    <div class="text-center error">
+                        * User Existed!
+                    </div>
+                </transition>
                 <div class="group-input">
-                    <input type="text" placeholder="Full Name" v-model="fullname">               
-                </div>                
-                <div class="group-input">
-                    <input type="email" placeholder="Email" v-model="email">                 
+                    <input type="text" placeholder="Full Name" v-model="fullname">
                 </div>
                 <div class="group-input">
-                    <input type="text" placeholder="Phone Number" v-model="phone">                    
+                    <input type="email" placeholder="Email" v-model="email">
                 </div>
                 <div class="group-input">
-                    <input type="password" placeholder="Password" v-model="password">                  
+                    <input type="text" placeholder="Phone Number" v-model="phone">
+                </div>
+                <div class="group-input">
+                    <input type="password" placeholder="Password" v-model="password">
                 </div>
                 <div class="redirect-login" data-bs-toggle="modal" data-bs-target="#login">
                     <span data-bs-dismiss="modal" aria-label="Close">Do you want to login?</span>
@@ -41,20 +51,57 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import {
+    ref
+} from 'vue'
+import UserAPI from '../../api/UserAPI'
+import MatchesAPI from '../../api/MatchesAPI'
 
 export default {
     name: 'SignIn',
     setup() {
-        
+
         const fullname = ref('')
         const email = ref('')
         const phone = ref('')
         const password = ref('')
+        const success = ref(false)
+        const existed = ref(false)
 
-        const onSignUp = () => {
+        const onSignUp = async () => {
 
-            console.log("123")
+            const body = {
+                fullname: fullname.value,
+                address: '',
+                gender: '',
+                bio: '',
+                email: email.value,
+                phone: phone.value,
+                password: password.value,
+                image: [],
+                userID: '',
+            }
+
+            fullname.value = ''
+            email.value = ''
+            phone.value = ''
+            password.value = ''
+
+            const newUser = await UserAPI.addUser(body)
+
+            if (newUser === 'User existed') {
+                existed.value = true
+            } else {
+                const res = await MatchesAPI.createObject(newUser)
+                console.log(res)
+
+                success.value = true
+            }
+
+            setTimeout(() => {
+                success.value = null
+                existed.value = null
+            }, 4000);
 
         }
 
@@ -63,6 +110,8 @@ export default {
             email,
             phone,
             password,
+            success,
+            existed,
             onSignUp
         }
 
@@ -71,28 +120,51 @@ export default {
 </script>
 
 <style>
+.text-enter-from {
+    transform: scale(.6);
+}
 
-.bg-signup{
+.text-enter-to {
+    transform: scale(1);
+}
+
+.text-enter-active {
+    transition: all .3s ease-in;
+}
+
+.text-leave-from {
+    transform: scale(1);
+}
+
+.text-leave-to {
+    transform: scale(.6);
+}
+
+.text-leave-active {
+    transition: all .3s ease-out;
+}
+
+.bg-signup {
     background-color: #EBEEF3 !important;
 }
 
-.redirect-login{
+.redirect-login {
     text-align: end;
     margin-top: 1rem;
     cursor: pointer;
 }
 
-.redirect-login:hover{
+.redirect-login:hover {
     color: #FD546C;
 }
 
-.btn-modal-signin{
+.btn-modal-signin {
     display: flex;
     justify-content: center;
     margin: 3rem 0;
 }
 
-.btn-modal-signin input{
+.btn-modal-signin input {
     width: 100%;
     color: #fff;
     text-transform: uppercase;
@@ -105,20 +177,20 @@ export default {
     border: none;
 }
 
-.btn-modal-signin input:hover{
+.btn-modal-signin input:hover {
     background-color: #f83a56;
 }
 
-.error{
+.error {
     color: rgb(255, 102, 102);
     padding-left: .5rem;
 }
 
-.group-input{
+.group-input {
     margin-top: 1rem;
 }
 
-.group-input input{
+.group-input input {
     width: 100%;
     outline: none;
     border: none;
@@ -126,5 +198,4 @@ export default {
     padding: .5rem 1rem;
     font-size: 1.1rem;
 }
-
 </style>

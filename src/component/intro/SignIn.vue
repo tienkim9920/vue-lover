@@ -12,6 +12,9 @@
                 </div>
             </div>
             <div>
+                <div v-if="error" class="text-center error">
+                    * Note: {{ error }}
+                </div>
                 <div class="group-input">
                     <input type="text" placeholder="Phone Number" v-model="phone">
                     <span class="error" v-if="errorPhone">* Invalid Phone!</span>
@@ -40,6 +43,7 @@ import {
 import {
     useRouter
 } from 'vue-router'
+import UserAPI from '../../api/UserAPI'
 
 export default {
     name: 'SignIn',
@@ -51,9 +55,11 @@ export default {
         const errorPhone = ref(false)
         const errorPassword = ref(false)
 
+        const error = ref('')
+
         const router = useRouter()
 
-        const onSignIn = () => {
+        const onSignIn = async () => {
 
             if (!phone.value) {
                 errorPhone.value = true
@@ -67,19 +73,30 @@ export default {
                 return
             }
 
-            const data = {
+            errorPhone.value = false
+            errorPassword.value = false
+
+            const body = {
                 phone: phone.value,
                 password: password.value
             }
 
-            console.log(data)
+            const res = await UserAPI.login(body)
 
-            document.getElementsByClassName('modal-backdrop')[0].setAttribute("style", 
-                "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
-            document.getElementsByClassName('modal-backdrop')[1].setAttribute("style", 
-                "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+            if (res === "Please Checking Phone Again!"){
+                error.value = 'Please Checking Phone Again!'
+            }else if (res === 'Please Checking Password Again!'){
+                error.value = 'Please Checking Password Again!'
+            }else{
+                document.getElementsByClassName('modal-backdrop')[0].setAttribute("style", 
+                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+                document.getElementsByClassName('modal-backdrop')[1].setAttribute("style", 
+                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+                
+                sessionStorage.setItem('idUser', res._id)
 
-            router.push('/home')
+                router.push('/home')
+            }
 
         }
 
@@ -88,6 +105,7 @@ export default {
             password,
             errorPhone,
             errorPassword,
+            error,
             onSignIn
         }
 

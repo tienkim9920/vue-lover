@@ -277,7 +277,7 @@ body {
     }
 
     .another-see-likes {
-        left: 25.5% !important;
+        left: 23.5% !important;
         top: 82% !important;
     }
 

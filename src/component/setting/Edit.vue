@@ -90,20 +90,20 @@
                 <div class="title-body-edit">
                     Full Name
                 </div>
-                <input type="text" class="input-body-edit" placeholder="Add full name">
+                <input v-model="fullname" type="text" class="input-body-edit" placeholder="Add full name">
             </div>
             <div class="body-about-edit">
                 <div class="title-body-edit">
                     Address
                 </div>
-                <input type="text" class="input-body-edit" placeholder="Add address">
+                <input v-model="address" type="text" class="input-body-edit" placeholder="Add address">
             </div>
             <div class="body-about-edit">
                 <div class="title-body-edit">
                     Gender
                 </div>
                 <router-link to="/home/setting/edit/gender" class="link-body-edit">
-                    <a class="a-gender">Men</a>
+                    <a class="a-gender">{{ gender }}</a>
                     <i class="fa fa-chevron-right" style="color: gray; margin-top: .25rem"></i>
                 </router-link>
             </div>
@@ -111,7 +111,7 @@
                 <div class="title-body-edit">
                     About Tiền Kim
                 </div>
-                <input type="text" class="input-body-edit" placeholder="Add about you">
+                <input v-model="about" type="text" class="input-body-edit" placeholder="Add about you">
             </div>
         </div>
     </transition>
@@ -119,10 +119,68 @@
 </template>
 
 <script>
+import { ref, watch, watchEffect } from 'vue'
+import useDebouncedRef from './useDebouncedRef'
+import UserAPI from '../../api/UserAPI'
+
 export default {
     name: 'Edit',
     setup() {
+        const fullname = useDebouncedRef('', 1500)
+        const address = useDebouncedRef('', 1500)
+        const about = useDebouncedRef('', 1500)
+        const gender = ref('')
 
+        watchEffect(async () => {
+            const user = await UserAPI.detail(sessionStorage.getItem('idUser'))
+
+            fullname.value = user.fullname
+            address.value = user.address
+            about.value = user.bio
+            gender.value = user.gender
+        })
+
+        watch(fullname, async (newFullname) => {
+
+            const body = {
+                _id: sessionStorage.getItem('idUser'),
+                fullname: newFullname
+            }
+
+            const user = await UserAPI.fullname(body)
+
+            console.log(user)
+            
+        })
+
+        watch(address, async (newAddress) => {
+            const body = {
+                _id: sessionStorage.getItem('idUser'),
+                address: newAddress
+            }
+
+            const user = await UserAPI.address(body)
+
+            console.log(user)
+        })
+
+        watch(about, async (newAbout) => {
+            const body = {
+                _id: sessionStorage.getItem('idUser'),
+                bio: newAbout
+            }
+
+            const user = await UserAPI.about(body)
+
+            console.log(user)
+        })
+
+        return {
+            fullname,
+            address,
+            about,
+            gender
+        }
     },
 }
 </script>

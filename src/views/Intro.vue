@@ -100,6 +100,7 @@ import {
 } from 'vue-router'
 
 import UserAPI from '../api/UserAPI'
+import MatchesAPI from '../api/MatchesAPI'
 
 export default {
     name: "Intro",
@@ -161,6 +162,9 @@ export default {
                 }
 
                 const newUser = await UserAPI.addUser(body)
+
+                const res = await MatchesAPI.createObject(newUser)
+                console.log(res)
 
                 sessionStorage.setItem('idUser', newUser._id)
 
