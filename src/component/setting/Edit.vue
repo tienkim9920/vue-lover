@@ -19,14 +19,16 @@
                                 <div v-bind:class="item">
                                     <img :src="item.url">
                                 </div>
-                                <i class="fa fa-close" @click="getPosition(position)" data-bs-toggle="modal" data-bs-target="#deleteMedia"></i>
+                                <i class="fa fa-close icon-image-upload" @click="getPosition(position)" data-bs-toggle="modal" data-bs-target="#deleteMedia"></i>
                             </div>
                         </div>
-                        <router-link to="/home/setting/edit/addmedia" class="position-edit" v-if="length < index">
-                            <div class="img-edit-unactive">
+                        <router-link to="/home/setting/edit/addmedia" v-if="length < index">
+                            <div class="position-edit">
+                                <div class="img-edit-unactive">
 
+                                </div>
+                                <i class="fa fa-plus edit-plus"></i>
                             </div>
-                            <i class="fa fa-plus edit-plus"></i>
                         </router-link>
                     </div>
                 </div>
@@ -231,11 +233,11 @@ export default {
 }
 
 .edit-plus {
-    font-size: 1.5rem !important;
+    position: absolute;
+    top: 40%;
+    left: 39%;
     color: #fff !important;
     background-color: #FD546C !important;
-    margin-left: 2.35rem;
-    margin-top: 3.3rem;
 }
 
 .position-edit {
@@ -243,9 +245,6 @@ export default {
 }
 
 .box-image-edit i {
-    position: absolute;
-    top: 85%;
-    left: 85%;
     color: #FD546C;
     background-color: #fff;
     padding: .3rem .45rem;
@@ -253,6 +252,12 @@ export default {
     font-size: 18px;
     cursor: pointer;
     box-shadow: 0 0 0.2em 0.2em rgba(170, 170, 170, 0.25);
+}
+
+.box-image-edit .icon-image-upload {
+    position: absolute;
+    top: 85%;
+    left: 85%;
 }
 
 .grid-image-edit {
@@ -317,8 +322,8 @@ export default {
         padding: 4rem .8rem .6rem .8rem !important;
     }
 
-    .edit-plus {
+    /* .edit-plus {
         margin-left: 2.72rem;
-    }
+    } */
 }
 </style>

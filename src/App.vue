@@ -61,7 +61,7 @@ body {
 .skeleton-wrapper-edit {
     position: relative;
     overflow: hidden;
-    width: 118px;
+    width: 115px;
     height: 140px;
     border-radius: 4px;
 }
