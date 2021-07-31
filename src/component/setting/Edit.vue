@@ -1,7 +1,7 @@
 <template>
 <div class="layout-profile">
     <transition name="show" appear>
-        <div class="wrapper-profile-user" style="padding-bottom: 5rem">
+        <div class="wrapper-profile-user">
             <div class="header-edit">
                 <span>Edit Info</span>
                 <router-link to="/home/setting" class="close-edit">Done</router-link>
@@ -41,6 +41,12 @@
                     Full Name
                 </div>
                 <input v-model="fullname" type="text" class="input-body-edit" placeholder="Add full name">
+            </div>
+            <div class="body-about-edit">
+                <div class="title-body-edit">
+                    Age
+                </div>
+                <input v-model="age" type="text" class="input-body-edit" placeholder="Add age">
             </div>
             <div class="body-about-edit">
                 <div class="title-body-edit">
@@ -94,6 +100,7 @@ export default {
     },
     setup() {
         const fullname = useDebouncedRef('', 2000)
+        const age = useDebouncedRef('', 2000)
         const address = ref('')
         const about = useDebouncedRef('', 2000)
         const gender = ref('')
@@ -106,7 +113,9 @@ export default {
 
             profile.value = user
             length.value = user.image.length - 1
+
             fullname.value = user.fullname
+            age.value = user.age
             address.value = user.address
             about.value = user.bio
             gender.value = user.gender
@@ -120,6 +129,19 @@ export default {
             }
 
             const user = await UserAPI.fullname(body)
+
+            console.log(user)
+
+        })
+
+        watch(age, async (newAge) => {
+
+            const body = {
+                _id: sessionStorage.getItem('idUser'),
+                age: newAge
+            }
+
+            const user = await UserAPI.age(body)
 
             console.log(user)
 
@@ -159,6 +181,7 @@ export default {
 
         return {
             fullname,
+            age,
             address,
             about,
             gender,
@@ -173,6 +196,11 @@ export default {
 </script>
 
 <style>
+.wrapper-profile-user{
+    padding-bottom: 5rem; 
+    background-color: #f8f8f8 !important;
+}
+
 .link-body-edit {
     display: flex;
     justify-content: space-between;
@@ -198,6 +226,7 @@ export default {
     outline: none;
     border: none;
     font-family: 'Raleway', sans-serif;
+    color: gray;
 }
 
 .body-about-edit {

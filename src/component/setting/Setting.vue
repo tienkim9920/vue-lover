@@ -1,6 +1,6 @@
 <template>
 <div class="layout-profile">
-    <div class="wrapper-profile-user">
+    <div class="wrapper-profile-user" style="background-color: #fff !important">
         <div class="setting-laptop">
             <div class="profile-header">
                 <div class="img-profile-header">

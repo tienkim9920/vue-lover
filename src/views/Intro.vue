@@ -151,6 +151,7 @@ export default {
 
                 const body = {
                     fullname: '',
+                    age: '',
                     address: '',
                     gender: '',
                     bio: '',

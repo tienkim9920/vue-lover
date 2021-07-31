@@ -25,6 +25,10 @@ const UserAPI = {
         const url = '/user/fullname'
         return axiosClient.patch(url, body)
     },
+    age: (body) => {
+        const url = '/user/age'
+        return axiosClient.patch(url, body)
+    },
     address: (body) => {
         const url = '/user/address'
         return axiosClient.patch(url, body)

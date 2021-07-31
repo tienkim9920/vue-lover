@@ -11,7 +11,7 @@
                     Option
                 </div>
                 <div class="link-body-edit" @click="changeGender('Male')">
-                    <a class="a-gender">Men</a>
+                    <a class="a-gender">Male</a>
                     <i class="fa fa-check icon-check-gender" v-if="gender === 'Male'"></i>
                 </div>
                 <div class="link-body-edit" @click="changeGender('Female')" style="border-top: 1px solid #f8f8f8">

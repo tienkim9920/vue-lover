@@ -72,6 +72,7 @@ export default {
 
             const body = {
                 fullname: fullname.value,
+                age: '',
                 address: '',
                 gender: '',
                 bio: '',

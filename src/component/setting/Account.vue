@@ -26,11 +26,8 @@
             </div>
 
             <div class="body-about-edit">
-                <div class="logout-account" v-if="!session" @click="onLogOut">
+                <div class="logout-account" v-if="session" @click="onLogOut">
                     Logout
-                </div>
-                <div class="logout-account" v-if="session">
-                     <v-facebook-login app-id="1188277554976347"></v-facebook-login>
                 </div>
             </div>
         </div>
@@ -47,10 +44,10 @@ export default {
         }
     },
     created(){
-        if (!sessionStorage.getItem('fbssls_1188277554976347')){
-            this.session = false
-        }else{
+        if (sessionStorage.getItem('idUser')){
             this.session = true
+        }else{
+            this.session = false
         }
     },
     methods: {
