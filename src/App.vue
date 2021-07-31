@@ -53,8 +53,16 @@ body {
 .skeleton-wrapper {
     position: relative;
     overflow: hidden;
-    width: 105px;
+    width: 110px;
     height: 130px;
+    border-radius: 4px;
+}
+
+.skeleton-wrapper-edit {
+    position: relative;
+    overflow: hidden;
+    width: 118px;
+    height: 140px;
     border-radius: 4px;
 }
 
@@ -75,6 +83,11 @@ body {
 
 /* Theme */
 .skeleton-wrapper.light {
+    background: #f7f7f7;
+    border-radius: 4px;
+}
+
+.skeleton-wrapper-edit.light {
     background: #f7f7f7;
     border-radius: 4px;
 }

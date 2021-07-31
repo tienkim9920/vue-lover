@@ -7,83 +7,31 @@
                 <router-link to="/home/setting" class="close-edit">Done</router-link>
             </div>
             <div class="body-image-edit">
-                <div class="grid-image-edit">
-                    <div class="box-image-edit">
-                        <div class="position-edit">
-                            <div>
-                                <img src="../../assets/avt2.jpg" alt="">
+                <div class="grid-image-edit" v-if="!profile">
+                    <div v-for="index in [0,1,2,3,4,5,6,7,8]" :key="index">
+                        <SkeletonEdit />
+                    </div>
+                </div>
+                <div class="grid-image-edit" v-if="profile">
+                    <div class="box-image-edit" v-for="index in [0,1,2,3,4,5,6,7,8]" :key="index">
+                        <div v-for="(item, position) in profile.image" :key="position">
+                            <div class="position-edit" v-if="index === position">
+                                <div v-bind:class="item">
+                                    <img :src="item.url">
+                                </div>
+                                <i class="fa fa-close" @click="getPosition(position)" data-bs-toggle="modal" data-bs-target="#deleteMedia"></i>
                             </div>
+                        </div>
+                        <router-link to="/home/setting/edit/addmedia" class="position-edit" v-if="length < index">
+                            <div class="img-edit-unactive">
 
-                            <i class="fa fa-close"></i>
-                        </div>
-                    </div>
-                    <div class="box-image-edit">
-                        <div class="position-edit">
-                            <div>
-                                <img src="../../assets/avt2.jpg" alt="">
-                            </div>
-                            <i class="fa fa-close"></i>
-                        </div>
-                    </div>
-                    <div class="box-image-edit">
-                        <div class="position-edit">
-                            <div>
-                                <img src="../../assets/avt2.jpg" alt="">
-                            </div>
-                            <i class="fa fa-close"></i>
-                        </div>
-                    </div>
-                    <div class="box-image-edit">
-                        <div class="position-edit">
-                            <div>
-                                <img src="../../assets/avt2.jpg" alt="">
-                            </div>
-                            <i class="fa fa-close"></i>
-                        </div>
-                    </div>
-                    <div class="box-image-edit">
-                        <div class="position-edit">
-                            <div>
-                                <img src="../../assets/avt2.jpg" alt="">
-                            </div>
-                            <i class="fa fa-close"></i>
-                        </div>
-                    </div>
-                    <div class="box-image-edit">
-                        <div class="position-edit">
-                            <div>
-                                <img src="../../assets/avt2.jpg" alt="">
-                            </div>
-                            <i class="fa fa-close"></i>
-                        </div>
-                    </div>
-                    <div class="box-image-edit">
-                        <div class="position-edit">
-                            <div class="img-edit-unactive">
-                                <!-- <img src="../../assets/avt2.jpg" alt=""> -->
                             </div>
                             <i class="fa fa-plus edit-plus"></i>
-                        </div>
-                    </div>
-                    <div class="box-image-edit">
-                        <div class="position-edit">
-                            <div class="img-edit-unactive">
-                                <!-- <img src="../../assets/avt2.jpg" alt=""> -->
-                            </div>
-                            <i class="fa fa-plus edit-plus"></i>
-                        </div>
-                    </div>
-                    <div class="box-image-edit">
-                        <div class="position-edit">
-                            <div class="img-edit-unactive">
-                                <!-- <img src="../../assets/avt2.jpg" alt=""> -->
-                            </div>
-                            <i class="fa fa-plus edit-plus"></i>
-                        </div>
+                        </router-link>
                     </div>
                 </div>
                 <div class="btn-add-image-edit">
-                    <a>ADD MEDIA</a>
+                    <router-link to="/home/setting/edit/addmedia">ADD MEDIA</router-link>
                 </div>
             </div>
             <div class="body-about-edit">
@@ -96,7 +44,10 @@
                 <div class="title-body-edit">
                     Address
                 </div>
-                <input v-model="address" type="text" class="input-body-edit" placeholder="Add address">
+                <a href="/home/setting/edit/address" class="link-body-edit">
+                    <a class="a-gender">{{ address }}</a>
+                    <i class="fa fa-chevron-right" style="color: gray; margin-top: .25rem"></i>
+                </a>
             </div>
             <div class="body-about-edit">
                 <div class="title-body-edit">
@@ -115,25 +66,44 @@
             </div>
         </div>
     </transition>
+
+    <div class="modal fade" id="deleteMedia">
+        <DeleteMedia :index="position" @delete="handlerDelete" />
+    </div>
 </div>
 </template>
 
 <script>
-import { ref, watch, watchEffect } from 'vue'
+import {
+    ref,
+    watch,
+    watchEffect
+} from 'vue'
 import useDebouncedRef from './useDebouncedRef'
 import UserAPI from '../../api/UserAPI'
+import SkeletonEdit from '../skeleton/SkeletonEdit.vue'
+import DeleteMedia from './DeleteMedia.vue'
 
 export default {
     name: 'Edit',
+    components: {
+        SkeletonEdit,
+        DeleteMedia
+    },
     setup() {
-        const fullname = useDebouncedRef('', 1500)
-        const address = useDebouncedRef('', 1500)
-        const about = useDebouncedRef('', 1500)
+        const fullname = useDebouncedRef('', 2000)
+        const address = ref('')
+        const about = useDebouncedRef('', 2000)
         const gender = ref('')
+        const profile = useDebouncedRef(null, 2000)
+        const length = ref(null)
+        const position = ref('')
 
         watchEffect(async () => {
             const user = await UserAPI.detail(sessionStorage.getItem('idUser'))
 
+            profile.value = user
+            length.value = user.image.length - 1
             fullname.value = user.fullname
             address.value = user.address
             about.value = user.bio
@@ -150,18 +120,7 @@ export default {
             const user = await UserAPI.fullname(body)
 
             console.log(user)
-            
-        })
 
-        watch(address, async (newAddress) => {
-            const body = {
-                _id: sessionStorage.getItem('idUser'),
-                address: newAddress
-            }
-
-            const user = await UserAPI.address(body)
-
-            console.log(user)
         })
 
         watch(about, async (newAbout) => {
@@ -175,11 +134,37 @@ export default {
             console.log(user)
         })
 
+        const getPosition = (value) => {
+            position.value = value
+        }
+
+        const handlerDelete = async (value) => {
+
+            profile.value = null
+
+            const body = {
+                _id: sessionStorage.getItem('idUser'),
+                position: value
+            }
+
+            const user = await UserAPI.deleteMedia(body)
+
+            setTimeout(() => {
+                profile.value = user
+                length.value = user.image.length - 1
+            }, 2000)
+        }
+
         return {
             fullname,
             address,
             about,
-            gender
+            gender,
+            profile,
+            length,
+            position,
+            handlerDelete,
+            getPosition
         }
     },
 }
@@ -246,9 +231,11 @@ export default {
 }
 
 .edit-plus {
-    font-size: .9rem !important;
+    font-size: 1.5rem !important;
     color: #fff !important;
     background-color: #FD546C !important;
+    margin-left: 2.35rem;
+    margin-top: 3.3rem;
 }
 
 .position-edit {
@@ -276,7 +263,7 @@ export default {
 
 .body-image-edit {
     padding: .6rem .8rem;
-    background-color: #f5f5f5;
+    background-color: #fcfcfc;
 }
 
 .img-edit-unactive {
@@ -328,6 +315,10 @@ export default {
 
     .body-image-edit {
         padding: 4rem .8rem .6rem .8rem !important;
+    }
+
+    .edit-plus {
+        margin-left: 2.72rem;
     }
 }
 </style>

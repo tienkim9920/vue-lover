@@ -11,6 +11,8 @@ import Setting from "../component/setting/Setting.vue"
 import Edit from "../component/setting/Edit.vue"
 import Account from "../component/setting/Account.vue"
 import Gender from "../component/setting/Gender.vue"
+import Address from "../component/setting/Address.vue"
+import AddMedia from "../component/setting/AddMedia.vue"
 
 const routes = [
     {
@@ -54,8 +56,16 @@ const routes = [
                 component: Edit
             },
             {
-                path: 'setting/edit/Gender',
+                path: 'setting/edit/gender',
                 component: Gender
+            },
+            {
+                path: 'setting/edit/address',
+                component: Address
+            },
+            {
+                path: 'setting/edit/addmedia',
+                component: AddMedia
             },
             {
                 path: 'setting/account',

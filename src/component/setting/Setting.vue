@@ -93,7 +93,7 @@ export default {
 
 .btn-edit-setting a {
     text-decoration: none;
-    color: #fff;
+    color: #fff !important;
     text-transform: uppercase;
     letter-spacing: .05rem;
     font-size: .9rem;

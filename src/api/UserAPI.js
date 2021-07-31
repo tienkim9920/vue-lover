@@ -37,6 +37,14 @@ const UserAPI = {
         const url = '/user/gender'
         return axiosClient.patch(url, body)
     },
+    media: (body) => {
+        const url = '/user/media'
+        return axiosClient.patch(url, body)
+    },
+    deleteMedia: (body) => {
+        const url = '/user/delMedia'
+        return axiosClient.patch(url, body)
+    },
   
 }
 
