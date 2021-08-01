@@ -4,34 +4,34 @@
         <div class="setting-laptop">
             <div class="profile-header">
                 <div class="img-profile-header">
-                    <div v-for="item in image" :key="item.id">
-                        <img v-bind:class="(showImage === item.id) ? 'active-image-matches' : 'unactive-image-matches'" :src="item.src" alt="">
+                    <div v-for="(item, index) in profile.image" :key="index">
+                        <img v-bind:class="(showImage === index) ? 'active-image-matches' : 'unactive-image-matches'" :src="item.url" alt="">
                     </div>
                 </div>
                 <div class="count-image-line" v-bind:style="{ gridTemplateColumns: gridTemplateColumns }">
-                    <div v-for="item in image" :key="item.id" v-bind:class="(showImage === item.id) ? 'active-image-line' : 'unactive-image-line'">
+                    <div v-for="(item, index) in profile.image" :key="index" v-bind:class="(showImage === index) ? 'active-image-line' : 'unactive-image-line'">
                     </div>
                 </div>
-                <a class="view-image arrow-next" v-if="showImage < image.length" @click="nextImage">
+                <a class="view-image arrow-next" v-if="showImage < length" @click="nextImage">
                     <i class="fa fa-chevron-right" style="font-size: 26px; color: #fff"></i></a>
-                <a class="view-image arrow-prev" v-if="showImage !== 1" @click="prevImage">
+                <a class="view-image arrow-prev" v-if="showImage !== 0" @click="prevImage">
                     <i class="fa fa-chevron-left" style="font-size: 26px; color: #fff"></i></a>
             </div>
             <div class="profile-body">
                 <div class="title-profile-body">
-                    <h3>Tiền Kim <span>18</span></h3>
+                    <h3>{{ profile.fullname }} <span>{{ profile.age }}</span></h3>
                 </div>
                 <div class="detail-profile-body d-flex">
                     <i class="fa fa-home" style="font-size:24px"></i>
-                    <span style="margin-left: .7rem; margin-top: .1rem">Lives In TP. Quy Nhơn</span>
+                    <span style="margin-left: .7rem; margin-top: .1rem">{{ profile.address }}</span>
                 </div>
                 <div class="detail-profile-body d-flex">
                     <i class="fa fa-user" style="font-size:24px; margin-left: .1rem"></i>
-                    <span style="margin-left: .9rem; margin-top: .1rem">Men</span>
+                    <span style="margin-left: .9rem; margin-top: .1rem">{{ profile.gender }}</span>
                 </div>
             </div>
             <div class="profile-bio">
-                <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod, provident recusandae. Quos expedita id, cumque aliquam ducimus ea culpa praesentium odit, magni, at fugiat vitae quod saepe et? Natus, error!</span>
+                <span>{{ profile.bio }}</span>
             </div>
             <div class="btn-edit-setting">
                 <router-link to="/home/setting/account">Settings</router-link>
@@ -46,8 +46,7 @@
 </template>
 
 <script>
-import avt2 from "../../assets/avt2.jpg"
-import avt3 from "../../assets/avt3.jpg"
+import UserAPI from '../../api/UserAPI'
 import SettingMobile from './SettingMobile.vue'
 
 export default {
@@ -57,21 +56,19 @@ export default {
     },
     data: () => {
         return {
-            image: [{
-                    id: 1,
-                    src: avt2
-                },
-                {
-                    id: 2,
-                    src: avt3
-                },
-            ],
-            showImage: 1,
-            gridTemplateColumns: ''
+            profile: {},
+            showImage: 0,
+            gridTemplateColumns: '',
+            length: ''
         }
     },
-    created() {
-        this.gridTemplateColumns = `repeat(${this.image.length}, minmax(60px, 1fr))`
+    async created() {
+
+        const user = await UserAPI.detail(sessionStorage.getItem('idUser'))
+        this.profile = user
+        this.length = user.image.length - 1
+
+        this.gridTemplateColumns = `repeat(${user.image.length}, minmax(60px, 1fr))`
     },
     methods: {
         nextImage() {

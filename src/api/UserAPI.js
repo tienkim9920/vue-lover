@@ -49,6 +49,10 @@ const UserAPI = {
         const url = '/user/delMedia'
         return axiosClient.patch(url, body)
     },
+    email: (body) => {
+        const url = '/user/email'
+        return axiosClient.patch(url, body)
+    },
   
 }
 

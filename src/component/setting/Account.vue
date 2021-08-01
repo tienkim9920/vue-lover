@@ -1,7 +1,7 @@
 <template>
 <div class="layout-profile">
     <transition name="show" appear>
-        <div class="wrapper-profile-user" style="padding-bottom: 5rem; background-color: #f8f8f8">
+        <div class="wrapper-profile-user" style="padding-bottom: 3rem; background-color: #f8f8f8">
             <div class="header-edit">
                 <span>Settings</span>
                 <router-link to="/home/setting" class="close-edit">Done</router-link>
@@ -10,19 +10,19 @@
                 <div class="title-body-edit">
                     Email
                 </div>
-                <input type="text" class="input-body-edit" placeholder="Add email">
+                <input v-model="email" type="text" class="input-body-edit" placeholder="Add email">
             </div>
             <div class="body-about-edit">
                 <div class="title-body-edit">
                     Phone
                 </div>
-                <input type="text" class="input-body-edit" placeholder="Add phone">
+                <input disabled="true" :value="phone" type="text" class="input-body-edit" placeholder="Add phone">
             </div>
             <div class="body-about-edit">
                 <div class="title-body-edit">
                     Password
                 </div>
-                <input type="text" class="input-body-edit" placeholder="">
+                <input v-model="password" type="password" class="input-body-edit" placeholder="">
             </div>
 
             <div class="body-about-edit">
@@ -36,6 +36,9 @@
 </template>
 
 <script>
+import { ref, watch, watchEffect } from 'vue'
+import useDebouncedRef from './useDebouncedRef'
+import UserAPI from '../../api/UserAPI'
 export default {
     name: 'Account',
     data: () => {
@@ -58,6 +61,41 @@ export default {
             this.$router.push('/')
         }
     },
+    setup() {
+        
+        const email = useDebouncedRef('', 2000)
+        const phone = ref('')
+        const password = useDebouncedRef('', 2000)
+
+        watchEffect(async () => {
+
+            const profile = await UserAPI.detail(sessionStorage.getItem('idUser'))
+
+            email.value = profile.email
+            phone.value = profile.phone
+            password.value = profile.password
+        })
+
+        watch(email, async (newEmail) => {
+
+            const body = {
+                _id: sessionStorage.getItem('idUser'),
+                email: newEmail
+            }
+
+            const user = await UserAPI.email(body)
+
+            console.log(user)
+
+        })
+
+        return {
+            email,
+            phone,
+            password
+        }
+
+    }
 }
 </script>
 

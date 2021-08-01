@@ -23,8 +23,11 @@
                     <input type="password" placeholder="Password" v-model="password">
                     <span class="error" v-if="errorPassword">* Invalid Password!</span>
                 </div>
-                <div class="redirect-login" data-bs-toggle="modal" data-bs-target="#signup">
-                    <span data-bs-dismiss="modal" aria-label="Close">Do you want to Account?</span>
+                <div class="redirect-login">
+                    <span 
+                        data-bs-dismiss="modal" aria-label="Close"
+                        data-bs-toggle="modal" data-bs-target="#signup"
+                        >Do you want to Account?</span>
                 </div>
                 <div class="btn-modal-signin">
                     <input type="submit" value="SIGN IN" @click="onSignIn">
@@ -117,7 +120,6 @@ export default {
 .redirect-login {
     text-align: end;
     margin-top: 1rem;
-    cursor: pointer;
 }
 
 .redirect-login:hover {

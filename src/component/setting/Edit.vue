@@ -68,7 +68,7 @@
             </div>
             <div class="body-about-edit">
                 <div class="title-body-edit">
-                    About Tiền Kim
+                    About {{ fullname }}
                 </div>
                 <input v-model="about" type="text" class="input-body-edit" placeholder="Add about you">
             </div>

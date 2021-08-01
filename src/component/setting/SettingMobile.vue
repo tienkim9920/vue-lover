@@ -21,31 +21,40 @@
         </div>
         <div class="body-setting-mobile" style="padding: 0 1rem 1rem 1rem">
             <div style="padding-left: 1rem">
-                <h3>Tiền Kim <span>21</span></h3>
+                <h3>{{ profile.fullname }} <span>{{ profile.age }}</span></h3>
             </div>
             <div class="detail-profile-body d-flex">
                 <i class="fa fa-home" style="font-size:24px"></i>
-                <span style="margin-left: .7rem; margin-top: .1rem">Lives In TP. Quy Nhơn</span>
+                <span style="margin-left: .7rem; margin-top: .1rem">{{ profile.address }}</span>
             </div>
             <div class="detail-profile-body d-flex">
                 <i class="fa fa-user" style="font-size:24px; margin-left: .1rem"></i>
-                <span style="margin-left: .9rem; margin-top: .1rem">Men</span>
+                <span style="margin-left: .9rem; margin-top: .1rem">{{ profile.gender }}</span>
             </div>
         </div>
         <div class="bio-setting-mobile">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, porro consequatur.
-            Fuga pariatur facere sit placeat. Culpa dolor fugit, dicta cumque unde neque ipsam nulla amet tempora officia enim ea.
+            {{ profile.bio }}
         </div>
     </div>
 </transition>
 </template>
 
 <script>
+import UserAPI from '../../api/UserAPI'
 export default {
     name: 'SettingMobile',
-    setup() {
-
+    data: () => {
+        return {
+            profile: {}
+        }
     },
+    async created() {
+
+        const user = await UserAPI.detail(sessionStorage.getItem('idUser'))
+
+        this.profile = user
+
+    }
 }
 </script>
 

@@ -11,6 +11,11 @@
                     Search
                 </div>
                 <input type="text" id="to_places" class="input-body-edit" placeholder="Add New Address">
+                <transition name="text" appear v-if="success">
+                    <div class="text-center text-success" style="margin-top: 1.8rem; font-size: 1rem">
+                        * You have been update address success!
+                    </div>
+                </transition>
                 <div class="update-address">
                     <a class="btn-create" @click="handlerAddress">Update Address</a>
                 </div>
@@ -24,16 +29,27 @@
 import UserAPI from '../../api/UserAPI'
 export default {
     name: 'Address',
+    data: () => {
+        return {
+            success: false
+        }
+    },
     methods: {
         async handlerAddress() {
-            const address = document.getElementById('to_places').value 
-            
+            const address = document.getElementById('to_places').value
+
             const body = {
                 _id: sessionStorage.getItem('idUser'),
                 address
             }
 
             const user = await UserAPI.address(body)
+
+            this.success = true
+
+            setTimeout(() => {
+                this.success = false
+            }, 3000)
 
             console.log(user)
         }
@@ -42,9 +58,8 @@ export default {
 </script>
 
 <style>
-.update-address{
+.update-address {
     text-align: center;
     margin-top: 4rem;
 }
-
 </style>

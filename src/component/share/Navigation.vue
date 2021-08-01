@@ -3,7 +3,11 @@
     <div class="fixed-nav-header">
         <div class="navigation-header">
             <router-link to="/home"><img src="../../assets/avt1.jpg" alt=""></router-link>
-            <router-link to="/home/setting">My Profile</router-link>
+            <router-link to="/home/setting" class="myprofile-header" style="margin-top: .2rem">
+                <span>My Profile</span>
+                <i class="fa fa-chevron-right" style="color: #fff; margin-top: .5rem"></i>
+            </router-link>
+            
         </div>
         <div class="navigation-content">
             <a @click="onActiveNav('matches')">Matches</a>
@@ -26,12 +30,6 @@
                 <router-link :to="'/home/message/' + '1'">
                     <img src="../../assets/avt2.jpg" alt="">
                     <span class="name-in-image-user">Tiền Kim</span>
-                </router-link>
-            </div>
-            <div class="wrapper-image-user">
-                <router-link :to="'/home/message/' + '2'">
-                    <img src="../../assets/avt3.jpg" alt="">
-                    <span class="name-in-image-user">Mỹ Hân</span>
                 </router-link>
             </div>
         </div>
@@ -122,6 +120,14 @@ export default {
 </script>
 
 <style>
+.myprofile-header span{
+    width: 255px;
+}
+
+.myprofile-header{
+    display: flex;
+}
+
 .navigation-header a{
     background-color: transparent;
 }

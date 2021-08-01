@@ -6,20 +6,20 @@
     </div>
 </div>
 <div class="group-doituong">
-    <div v-for="(user, index) in users" :key="index">
+    <div v-for="(user, index) in listMatches" :key="index">
         <div v-bind:class="(showUser === index) ? 'list-doituong active' : 'list-doituong unactive'">
             <div class="detail-doituong">
-                <div v-for="item in user.image" :key="item.id">
-                    <img v-bind:class="(showImage === item.id) ? 'active-image-matches' : 'unactive-image-matches'" :src="item.src" alt="">
+                <div v-for="(item, index) in user.id_userTo.image" :key="index">
+                    <img v-bind:class="(showImage === index) ? 'active-image-matches' : 'unactive-image-matches'" :src="item.url" alt="">
                 </div>
-                <div class="count-image-line" v-bind:style="{ gridTemplateColumns: `repeat(${user.image.length}, minmax(60px, 1fr))` }">
-                    <div v-for="item in user.image" :key="item.id" v-bind:class="(showImage === item.id) ? 'active-image-line' : 'unactive-image-line'">
+                <div class="count-image-line" v-bind:style="{ gridTemplateColumns: gridTemplateColumns }">
+                    <div v-for="(item, index) in user.id_userTo.image" :key="index" v-bind:class="(showImage === index) ? 'active-image-line' : 'unactive-image-line'">
                     </div>
                 </div>
 
                 <div class="group-matches-name-nav-mobile">
-                    <span>Tiền Kim</span>
-                    <router-link :to="'/home/profile/' + '1'">
+                    <span>{{ user.id_userTo.fullname}}</span>
+                    <router-link :to="'/home/profile/' + user.id_userTo._id">
                         <i class="fa fa-address-book" style="font-size:32px; color: #FE5A62"></i>
                     </router-link>
                 </div>
@@ -28,23 +28,26 @@
                     <div class="line-matches-child"></div>
                 </div>
 
-                <a class="view-image arrow-next" v-if="showImage < user.image.length" @click="nextImage">
+                <a class="view-image arrow-next" v-if="showImage < user.id_userTo.image.length - 1" @click="nextImage">
                     <i class="fa fa-chevron-right" style="font-size: 26px; color: #fff"></i></a>
-                <a class="view-image arrow-prev" v-if="showImage !== 1" @click="prevImage">
+                <a class="view-image arrow-prev" v-if="showImage !== 0" @click="prevImage">
                     <i class="fa fa-chevron-left" style="font-size: 26px; color: #fff"></i></a>
                 <div class="group-option-user">
-                    <i class="fa fa-close icon-option-delete" @click="clickUnlike()" style="color: #FE5266"></i>
-                    <i class="fa fa-star icon-option-star" style="color: #36CAF6"></i>
-                    <i class="fa fa-heart icon-option-tym" @click="clickLike()" style="color: #23EBC2"></i>
+                    <i class="fa fa-close icon-option-delete" @click="clickUnlike" style="color: #FE5266"></i>
+                    <i class="fa fa-star icon-option-star" @click="clickSupper" style="color: #36CAF6"></i>
+                    <i class="fa fa-heart icon-option-tym" @click="clickLike" style="color: #23EBC2"></i>
                 </div>
             </div>
             <div class="group-matches-name">
-                <span>Tiền Kim</span>
-                <router-link :to="'/home/profile/' + '1'">
+                <span>{{ user.id_userTo.fullname }}</span>
+                <router-link :to="'/home/profile/' + user.id_userTo._id">
                     <i class="fa fa-address-book" style="font-size:32px; color: #FE5A62"></i>
                 </router-link>
             </div>
         </div>
+    </div>
+    <div class="msgEnd" v-if="msgEnd">
+        Please reload page to update lover!
     </div>
 </div>
 
@@ -63,14 +66,12 @@
 </template>
 
 <script>
-import avt2 from "../../assets/avt2.jpg"
-import avt3 from "../../assets/avt3.jpg"
-import avt4 from "../../assets/avt4.jpg"
-import avt5 from "../../assets/avt5.jpg"
-import {
-    ref,
-    reactive,
-} from 'vue'
+import MatchesAPI from '../../api/MatchesAPI'
+import queryString from 'query-string'
+// import {
+//     ref,
+//     watchEffect,
+// } from 'vue'
 
 export default {
     name: 'Match',
@@ -135,71 +136,79 @@ export default {
     //         this.items[index].list = list
     //     }
     // },
-    setup() {
-
-        const users = reactive([{
-                id: 1,
-                name: 'Tiền Kim',
-                image: [{
-                        id: 1,
-                        src: avt2
-                    },
-                    {
-                        id: 2,
-                        src: avt3
-                    }
-                ]
-            },
-            {
-                id: 2,
-                name: 'Mỹ Hân',
-                image: [{
-                        id: 1,
-                        src: avt4
-                    },
-                    {
-                        id: 2,
-                        src: avt5
-                    }
-                ]
-            }
-        ])
-
-        const showUser = ref(0)
-
-        const showImage = ref(1)
-
-        const gridTemplateColumns = ref('')
-
-        const nextImage = () => {
-            showImage.value = showImage.value + 1
-        }
-
-        const prevImage = () => {
-            showImage.value = showImage.value - 1
-        }
-
-        const clickLike = () => {
-            showUser.value = showUser.value + 1
-            showImage.value = 1
-        }
-
-        const clickUnlike = () => {
-            showUser.value = showUser.value + 1
-            showImage.value = 1
-        }
-
+    data: () => {
         return {
-            users,
-            showImage,
-            showUser,
-            gridTemplateColumns,
-            nextImage,
-            prevImage,
-            clickLike,
-            clickUnlike
+            listMatches: [],
+            showUser: 0,
+            showImage: 0,
+            gridTemplateColumns: '',
+            msgEnd: false
+        }
+    },
+    async created() {
+
+        const params = {
+            _id: sessionStorage.getItem('idUser')
         }
 
+        const query = '?' + queryString.stringify(params)
+
+        const list = await MatchesAPI.listObject(query)
+
+        this.listMatches = list
+
+        this.gridTemplateColumns = `repeat(${list[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
+
+    },
+    methods: {
+        nextImage() {
+            this.showImage = this.showImage + 1
+        },
+        prevImage() {
+            this.showImage = this.showImage - 1
+        },
+        clickUnlike() {
+            this.showUser = this.showUser + 1
+            this.showImage = 0
+            this.gridTemplateColumns = `repeat(${this.listMatches[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
+        },
+        clickSupper() {
+            this.showUser = this.showUser + 1
+            this.showImage = 0
+            this.gridTemplateColumns = `repeat(${this.listMatches[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
+        },
+        async clickLike() {
+
+            // if (this.showUser === this.listMatches.length - 1) {
+            //     const params = {
+            //         _id: sessionStorage.getItem('idUser')
+            //     }
+
+            //     const query = '?' + queryString.stringify(params)
+
+            //     const list = await MatchesAPI.listObject(query)
+
+            //     this.listMatches = list
+
+            //     this.showUser = 0
+            //     this.showImage = 0
+            //     this.gridTemplateColumns = `repeat(${list[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
+
+            //     return
+            // }
+
+            
+            if (this.showUser === this.listMatches.length - 1) {
+                this.msgEnd = true
+                this.showUser = this.showUser + 1
+                return
+            }
+
+            this.showUser = this.showUser + 1
+            this.showImage = 0
+            this.gridTemplateColumns = `repeat(${this.listMatches[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
+
+        }
     },
 }
 </script>
@@ -220,6 +229,14 @@ export default {
     padding: 5px;
     margin-bottom: 10px;
 } */
+
+.msgEnd{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    text-align: center;
+}
 
 .group-matches-name {
     font-size: 2rem;

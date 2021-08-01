@@ -37,8 +37,11 @@
                 <div class="group-input">
                     <input type="password" placeholder="Password" v-model="password">
                 </div>
-                <div class="redirect-login" data-bs-toggle="modal" data-bs-target="#login">
-                    <span data-bs-dismiss="modal" aria-label="Close">Do you want to login?</span>
+                <div class="redirect-login">
+                    <span
+                        data-bs-toggle="modal" data-bs-target="#login"
+                        data-bs-dismiss="modal" aria-label="Close"
+                        >Do you want to login?</span>
                 </div>
                 <div class="btn-modal-signin">
                     <input type="submit" value="SIGN UP" @click="onSignUp" v-if="(fullname && email && phone && password)">
