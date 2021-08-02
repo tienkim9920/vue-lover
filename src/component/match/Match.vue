@@ -5,7 +5,7 @@
         <h1>Lover</h1>
     </div>
 </div>
-<div class="group-doituong">
+<div class="group-doituong" v-if="listMatches">
     <div v-for="(user, index) in listMatches" :key="index">
         <div v-bind:class="(showUser === index) ? 'list-doituong active' : 'list-doituong unactive'">
             <div class="detail-doituong">
@@ -33,9 +33,9 @@
                 <a class="view-image arrow-prev" v-if="showImage !== 0" @click="prevImage">
                     <i class="fa fa-chevron-left" style="font-size: 26px; color: #fff"></i></a>
                 <div class="group-option-user">
-                    <i class="fa fa-close icon-option-delete" @click="clickUnlike" style="color: #FE5266"></i>
-                    <i class="fa fa-star icon-option-star" @click="clickSupper" style="color: #36CAF6"></i>
-                    <i class="fa fa-heart icon-option-tym" @click="clickLike" style="color: #23EBC2"></i>
+                    <i class="fa fa-close icon-option-delete" @click="clickUnlike(user._id)" style="color: #FE5266"></i>
+                    <i class="fa fa-star icon-option-star" @click="clickSupper(user._id)" style="color: #36CAF6"></i>
+                    <i class="fa fa-heart icon-option-tym" @click="clickLike(user._id)" style="color: #23EBC2"></i>
                 </div>
             </div>
             <div class="group-matches-name">
@@ -48,6 +48,17 @@
     </div>
     <div class="msgEnd" v-if="msgEnd">
         Please reload page to update lover!
+    </div>
+    <div class="msgEnd" v-if="length === 0">
+        We ran out of object for you!
+    </div>
+</div>
+<div class="group-doituong" v-if="!listMatches">
+    <div class="wrapper-loading">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
     </div>
 </div>
 
@@ -138,11 +149,12 @@ export default {
     // },
     data: () => {
         return {
-            listMatches: [],
+            listMatches: null,
             showUser: 0,
             showImage: 0,
             gridTemplateColumns: '',
-            msgEnd: false
+            msgEnd: false,
+            length: null
         }
     },
     async created() {
@@ -155,9 +167,16 @@ export default {
 
         const list = await MatchesAPI.listObject(query)
 
-        this.listMatches = list
+        setTimeout(() => {
+            this.listMatches = list
+            this.length = list.length
 
-        this.gridTemplateColumns = `repeat(${list[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
+            if (list.length < 1) {
+                return
+            }
+
+            this.gridTemplateColumns = `repeat(${list[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
+        }, 3000);
 
     },
     methods: {
@@ -167,37 +186,53 @@ export default {
         prevImage() {
             this.showImage = this.showImage - 1
         },
-        clickUnlike() {
+        async clickUnlike(value) {
+
+            const body = {
+                _id: value
+            }
+
+            const res = await MatchesAPI.unlike(body)
+            console.log(res)
+
+            if (this.showUser === this.listMatches.length - 1) {
+                this.msgEnd = true
+                this.showUser = this.showUser + 1
+                return
+            }
+
             this.showUser = this.showUser + 1
             this.showImage = 0
             this.gridTemplateColumns = `repeat(${this.listMatches[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
         },
-        clickSupper() {
+        async clickSupper(value) {
+
+            const body = {
+                _id: value
+            }
+
+            const res = await MatchesAPI.supper(body)
+            console.log(res)
+
+            if (this.showUser === this.listMatches.length - 1) {
+                this.msgEnd = true
+                this.showUser = this.showUser + 1
+                return
+            }
+
             this.showUser = this.showUser + 1
             this.showImage = 0
             this.gridTemplateColumns = `repeat(${this.listMatches[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
         },
-        async clickLike() {
+        async clickLike(value) {
 
-            // if (this.showUser === this.listMatches.length - 1) {
-            //     const params = {
-            //         _id: sessionStorage.getItem('idUser')
-            //     }
+            const body = {
+                _id: value
+            }
 
-            //     const query = '?' + queryString.stringify(params)
+            const res = await MatchesAPI.like(body)
+            console.log(res)
 
-            //     const list = await MatchesAPI.listObject(query)
-
-            //     this.listMatches = list
-
-            //     this.showUser = 0
-            //     this.showImage = 0
-            //     this.gridTemplateColumns = `repeat(${list[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
-
-            //     return
-            // }
-
-            
             if (this.showUser === this.listMatches.length - 1) {
                 this.msgEnd = true
                 this.showUser = this.showUser + 1
@@ -230,7 +265,7 @@ export default {
     margin-bottom: 10px;
 } */
 
-.msgEnd{
+.msgEnd {
     display: flex;
     justify-content: center;
     align-items: center;

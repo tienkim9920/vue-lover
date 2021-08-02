@@ -4,8 +4,8 @@
         <div class="header-setting-mobile">
             <div class="d-flex justify-content-center">
                 <div class="info-setting-mobile">
-                    <img src="../../assets/avt2.jpg" alt="">
-                    <h3>Tiền Kim <span>21</span></h3>
+                    <img :src="image" alt="">
+                    <h3>{{ profile.fullname }} <span>{{ profile.age }}</span></h3>
                 </div>
             </div>
             <div class="d-flex justify-content-between" style="padding: 0 3.5rem">
@@ -45,7 +45,8 @@ export default {
     name: 'SettingMobile',
     data: () => {
         return {
-            profile: {}
+            profile: {},
+            image: ''
         }
     },
     async created() {
@@ -53,6 +54,8 @@ export default {
         const user = await UserAPI.detail(sessionStorage.getItem('idUser'))
 
         this.profile = user
+
+        this.image = user.image[0].url
 
     }
 }

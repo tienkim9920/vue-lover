@@ -7,7 +7,7 @@
                 <span>My Profile</span>
                 <i class="fa fa-chevron-right" style="color: #fff; margin-top: .5rem"></i>
             </router-link>
-            
+
         </div>
         <div class="navigation-content">
             <a @click="onActiveNav('matches')">Matches</a>
@@ -21,17 +21,20 @@
             <div class="wrapper-image-user">
                 <div class="another-hide">
                     <router-link to="/home/another">
-                        <img src="../../assets/avt2.jpg" class="blur-image">
-                        <span class="count-user-hide">99+</span>
+                        <SkeletonUser />
+                        <span class="count-user-hide">???</span>
                     </router-link>
                 </div>
             </div>
-            <div class="wrapper-image-user">
-                <router-link :to="'/home/message/' + '1'">
-                    <img src="../../assets/avt2.jpg" alt="">
-                    <span class="name-in-image-user">Tiền Kim</span>
-                </router-link>
+            <div v-for="item in user" :key="item._id">
+                <div class="wrapper-image-user">
+                    <router-link :to="'/home/message/' + item.id_userTo._id">
+                        <img :src="item.id_userTo.image[0].url" alt="">
+                        <span class="name-in-image-user">{{ item.id_userTo.fullname }}</span>
+                    </router-link>
+                </div>
             </div>
+
         </div>
     </div>
     <div v-if="!user">
@@ -64,6 +67,8 @@
 
 <script>
 import SkeletonUser from '../skeleton/SkeletonUser.vue'
+import ChatAPI from '../../api/ChatAPI'
+import queryString from 'query-string'
 
 export default {
     name: 'Navigation',
@@ -88,10 +93,18 @@ export default {
             checkMessage: ''
         }
     },
-    created() {
+    async created() {
+
+        const params = {
+            _id: sessionStorage.getItem('idUser')
+        }
+
+        const query = '?' + queryString.stringify(params)
+
+        const listMatches = await ChatAPI.getList(query)
 
         setTimeout(() => {
-            this.user = [1, 2, 3, 4]
+            this.user = listMatches
         }, 3000)
 
     },
@@ -120,15 +133,15 @@ export default {
 </script>
 
 <style>
-.myprofile-header span{
+.myprofile-header span {
     width: 255px;
 }
 
-.myprofile-header{
+.myprofile-header {
     display: flex;
 }
 
-.navigation-header a{
+.navigation-header a {
     background-color: transparent;
 }
 
@@ -211,7 +224,7 @@ export default {
     color: #fff;
     font-size: 1.2rem;
     padding: .4rem;
-    background-color: #EEBC32;
+    background-color: #FE5A62;
     border-radius: 50%;
     cursor: pointer;
 }
@@ -231,7 +244,7 @@ export default {
     position: relative;
 }
 
-.wrapper-image-user a .name-in-image-user{
+.wrapper-image-user a .name-in-image-user {
     color: #fff;
     position: absolute;
     top: 80%;

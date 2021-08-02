@@ -13,6 +13,69 @@ body {
     font-family: 'Quicksand', sans-serif;
 }
 
+/* Loading */
+
+.wrapper-loading {
+    position: absolute;
+    top: 30%;
+}
+
+.spinner {
+    width: 80px;
+    height: 80px;
+
+    position: relative;
+    margin: 100px auto;
+}
+
+.double-bounce1,
+.double-bounce2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #FD546C;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+    animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-bounce {
+
+    0%,
+    100% {
+        -webkit-transform: scale(0.0)
+    }
+
+    50% {
+        -webkit-transform: scale(1.0)
+    }
+}
+
+@keyframes sk-bounce {
+
+    0%,
+    100% {
+        transform: scale(0.0);
+        -webkit-transform: scale(0.0);
+    }
+
+    50% {
+        transform: scale(1.0);
+        -webkit-transform: scale(1.0);
+    }
+}
+
+/* Loading */
+
 /* Skeleton */
 
 .skeleton {
@@ -118,7 +181,7 @@ body {
     display: none;
 }
 
-.group-matches-name-nav-mobile{
+.group-matches-name-nav-mobile {
     display: none;
 }
 
@@ -151,9 +214,6 @@ body {
     }
 
     /* Navigation */
-
-
-
 
     /* Matches */
     .header-matches-mobile {
@@ -231,7 +291,7 @@ body {
         border-radius: 1rem;
     }
 
-    .group-matches-name-nav-mobile{
+    .group-matches-name-nav-mobile {
         width: 97%;
         display: block;
         font-size: 2rem;
@@ -243,7 +303,7 @@ body {
         top: 70%;
     }
 
-    .group-matches-name-nav-mobile i{
+    .group-matches-name-nav-mobile i {
         color: #fff;
     }
 
@@ -254,7 +314,7 @@ body {
         background-color: #f3f3f3 !important;
     }
 
-    .nav-mobile{
+    .nav-mobile {
         display: flex !important;
         justify-content: space-evenly;
         background-color: #fff;
@@ -266,47 +326,45 @@ body {
         /* border-top: 1px solid #e2e2e2; */
     }
 
-    .li-nav-mobile{
+    .li-nav-mobile {
         list-style: none;
     }
 
     /* Matches */
 
-
-
     /* Another */
-    .another-body{
+    .another-body {
         background-color: #fdfdfd !important;
     }
-    
+
     .grid-another-body {
         grid-template-columns: repeat(2, minmax(100px, 1fr)) !important;
         gap: 15px;
         padding: 1rem 2rem 3rem 2rem;
     }
 
-    .h5-another-body{
+    .h5-another-body {
         padding: 2rem 2rem 0rem 2rem;
     }
 
     .another-see-likes {
-        left: 23.5% !important;
+        left: 24% !important;
         top: 82% !important;
     }
 
-    .like-another h4{
+    .like-another h4 {
         margin-top: .3rem;
     }
 
-    .like-another{
+    .like-another {
         margin-top: .2rem;
     }
 
-    .icon-header-another{
+    .icon-header-another {
         margin-top: .2rem;
     }
 
-    .another-header{
+    .another-header {
         padding: .9rem 1rem !important;
     }
 
@@ -316,52 +374,49 @@ body {
 
     /* Another */
 
-
-
-
     /* Messages Content */
 
-    .wrapper-content-chat{
+    .wrapper-content-chat {
         grid-template-columns: auto !important;
     }
 
-    .content-information-right{
+    .content-information-right {
         display: none !important;
     }
 
-    .txt-footer-chat input{
+    .txt-footer-chat input {
         width: 100% !important;
     }
 
-    .input-chat-left{
+    .input-chat-left {
         border-bottom: 1px solid #e4e4e4 !important;
     }
 
-    .header-chat-left{
+    .header-chat-left {
         padding: 0 !important;
     }
 
     .message-send {
         border-radius: 2vw 2vw .2vw 2vw !important;
     }
+
     .message-received {
         border-radius: 2vw 2vw 2vw .2vw !important;
     }
 
     .body-chat-left {
-        height: 499px!important;
+        height: 499px !important;
     }
 
-    .redirect-message{
+    .redirect-message {
         display: none !important;
     }
 
-    .redirect-message-mobile{
+    .redirect-message-mobile {
         display: block !important;
     }
 
     /* Message Content */
-
 
     /* Profile ID */
 
@@ -369,13 +424,13 @@ body {
         display: block !important;
     }
 
-    .wrapper-profile-user{
+    .wrapper-profile-user {
         width: 100% !important;
         height: 700px !important;
         background-color: #f8f8f8 !important;
     }
 
-    .active-image-matches{
+    .active-image-matches {
         height: 560px !important;
     }
 
@@ -383,24 +438,23 @@ body {
         height: 56% !important;
     }
 
-    .profile-bio{
+    .profile-bio {
         margin-bottom: 2.5rem !important;
     }
 
-    .title-profile-body h3{
+    .title-profile-body h3 {
         margin-top: 1.5rem !important;
     }
 
     /* Profile ID */
 
-    
     /* Setting */
 
-    .setting-laptop{
+    .setting-laptop {
         display: none !important;
     }
 
-    .setting-mobile{
+    .setting-mobile {
         display: block !important;
     }
 
