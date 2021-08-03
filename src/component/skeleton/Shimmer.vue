@@ -1,6 +1,6 @@
 <template>
-<div className="shimmer-wrapper">
-    <div className="shimmer"></div>
+<div class="shimmer-wrapper">
+    <div class="shimmer"></div>
 </div>
 </template>
 

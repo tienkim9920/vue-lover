@@ -3,10 +3,13 @@
     <transition name="show" appear>
         <div class="content-chat-left">
             <div class="header-chat-left">
-                <router-link :to="'/home/profile/' + '1'">
+                <div v-if="!userTo">
+                    <SkeletonMess />
+                </div>
+                <router-link v-else :to="'/home/profile/' + id">
                     <div class="title-header-chat-left">
-                        <img src="../../assets/avt2.jpg" alt="">
-                        <h4>Tiền Kim</h4>
+                        <img :src="image" alt="">
+                        <h4>{{ fullname }}</h4>
                     </div>
                 </router-link>
                 <div class="redirect-message">
@@ -21,28 +24,55 @@
                 </div>
             </div>
             <div class="body-chat-left">
-                <div class="chat-message-send">
-                    <div class="message-send">Chào em</div>
-                </div>
-                <div class="chat-message-received">
-                    <img src="../../assets/avt2.jpg" alt="">
-                    <div class="message-received">Chào anh</div>
-                </div>
+                <input type="submit" @click="sendSocket">
+                <!-- <div>
+                    <div class="chat-message-send">
+                        <div class="message-send">Chào em</div>
+                    </div>
+                    <div class="chat-message-received">
+                        <img :src="image" alt="">
+                        <div class="message-received">Chào anh</div>
+                    </div>
+                    <div class="chat-message-send">
+                        <div class="message-send">Chào em</div>
+                    </div>
+                    <div class="chat-message-received">
+                        <img :src="image" alt="">
+                        <div class="message-received">Chào anh</div>
+                    </div>
+                    <div class="chat-message-send">
+                        <div class="message-send">Chào em</div>
+                    </div>
+                    <div class="chat-message-received">
+                        <img :src="image" alt="">
+                        <div class="message-received">Chào anh</div>
+                    </div>
+                    <div class="chat-message-send">
+                        <div class="message-send">Chào em</div>
+                    </div>
+                    <div class="chat-message-received">
+                        <img :src="image" alt="">
+                        <div class="message-received">Chào anh</div>
+                    </div>
+                </div> -->
             </div>
             <div class="footer-chat-left">
                 <div class="input-chat-left">
                     <div class="txt-footer-chat">
-                        <input type="text" placeholder="Type a message">
+                        <input v-model="message" type="text" placeholder="Type a message">
                     </div>
                     <div class="send-footer-chat">
                         <div>
-                            <i class="fa fa-smile-o" style="font-size:24px"></i>
+                            <i class="fa fa-smile-o" style="font-size:24px" @click="openIcon"></i>
                         </div>
                         <div style="margin-top: .2rem">
                             <a>SEND</a>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div v-if="showIcon">
+                <Icon :icon="icon" @handlerIcon="handlerIcon" />
             </div>
         </div>
     </transition>
@@ -53,23 +83,129 @@
 </template>
 
 <script>
-// import { useRouter } from 'vue-router'
+import {
+    ref
+} from '@vue/reactivity'
 import Profile from '../profile/Profile.vue'
+import Icon from './Icon.vue'
+import {
+    watchEffect
+} from '@vue/runtime-core'
+import ChatAPI from '../../api/ChatAPI'
+import queryString from 'query-string'
+import SkeletonMess from '../skeleton/SkeletonMess.vue'
+
+import io from "socket.io-client";
+var connectionOptions =  {
+            // "force new connection" : true,
+            // "reconnectionAttempts": "Infinity", 
+            // "timeout" : 10000,                  
+            "transports" : ["websocket"]
+        };
+
+const socket = io.connect('http://localhost:4000', connectionOptions)
 
 export default {
     name: 'Message',
     components: {
-        Profile
+        Profile,
+        Icon,
+        SkeletonMess
+    },
+    data: () => {
+        return {
+            userTo: null,
+            id: '',
+            fullname: '',
+            image: '',
+            room: '',
+        }
+    },
+    async created() {
+
+        //Get userTo for chat
+        const params = {
+            _id: sessionStorage.getItem('idUser'),
+            userTo: this.$route.params.id
+        }
+
+        const query = '?' + queryString.stringify(params)
+
+        setTimeout(async () => {
+            const resUserTo = await ChatAPI.getUser(query)
+            this.userTo = resUserTo
+            this.fullname = resUserTo.id_userTo.fullname
+            this.image = resUserTo.id_userTo.image[0].url
+            this.id = resUserTo.id_userTo._id
+            this.room = resUserTo.room
+
+            // Khi bấm vào đối tượng muốn chat thì client sẽ gửi lên server
+            // room chat của đối tượng đó
+            socket.emit('room', this.room)
+
+        }, 3000)
+
+    },
+    methods: {
+        sendSocket(){
+            const data = {
+                room: this.room,
+                msg: sessionStorage.getItem('idUser')
+            }
+
+            // Gửi tin nhắn đến đến server có kém room chat
+            socket.emit('send', data)
+        }
     },
     setup() {
 
-        // const router = useRouter()
+        const showIcon = ref(false)
+        const icon = ref([])
+        const message = ref('')
+
+        watchEffect(async () => {
+            // Get API Icon
+            const res = await fetch('https://cdn.jsdelivr.net/npm/emoji-picker-element-data@%5E1/en/emojibase/data.json')
+            const data = await res.json()
+            const newData = data.slice(0, 50)
+            icon.value = newData
+
+        })
+
+        watchEffect(() => {
+
+            // Tiến hành nhận tin nhắn
+            socket.on('receive', (data) => {
+                console.log(data)
+            })
+
+        })
+
+        const handlerIcon = (value) => {
+            message.value += icon.value[value].emoji + ' '
+        }
+
+        const openIcon = () => {
+            showIcon.value = !showIcon.value
+        }
+
+        return {
+            openIcon,
+            handlerIcon,
+            showIcon,
+            icon,
+            message,
+        }
 
     },
 }
 </script>
 
 <style>
+.content-chat-left {
+    position: relative;
+}
+
 .show-enter-from {
     transform: translateY(500px);
     opacity: 0;

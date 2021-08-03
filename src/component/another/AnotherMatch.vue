@@ -24,7 +24,7 @@
 
         <div class="grid-another-body" v-if="another">
             <div class="wrapper-another-body" v-for="item in another" :key="item._id">
-                <router-link :to="'/home/profile/' + item.id_userTo._id" class="box-another-match">
+                <router-link :to="'/home/message/' + item.id_userTo._id" class="box-another-match">
                     <img :src="item.id_userTo.image[0].url" alt="">
                     <div class="title-another-match">
                         <div>{{ item.id_userTo.fullname }}</div>

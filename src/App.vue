@@ -97,6 +97,13 @@ body {
     height: 10px;
 }
 
+.skeleton.title-circle {
+    margin-left: 1rem;
+    margin-top: 1.5rem;
+    width: 80px;
+    height: 12px;
+}
+
 .skeleton.detail {
     position: absolute;
     top: 85%;
@@ -109,6 +116,12 @@ body {
     width: 100%;
 }
 
+.skeleton.circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
 .skeleton.thumbnail {
     width: 100%;
 }
@@ -119,6 +132,12 @@ body {
     width: 110px;
     height: 130px;
     border-radius: 4px;
+}
+
+.skeleton-wrapper-circle {
+    padding: 5px 10px;
+    position: relative;
+    overflow: hidden
 }
 
 .skeleton-wrapper-edit {
@@ -142,6 +161,10 @@ body {
     grid-template-columns: 1fr 2fr;
     gap: 30px;
     align-items: center;
+}
+
+.skeleton-circle{
+    display: flex;
 }
 
 /* Theme */
