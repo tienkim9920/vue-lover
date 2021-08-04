@@ -24,48 +24,45 @@
                 </div>
             </div>
             <div class="body-chat-left">
-                <input type="submit" @click="sendSocket">
-                <!-- <div>
-                    <div class="chat-message-send">
-                        <div class="message-send">Chào em</div>
+                <div v-if="!messChat">
+                    <div v-for="index in [0, 1, 2, 3, 4, 5]" :key="index">
+                        <div v-bind:class="index % 2 === 0 ? 'chat-message-send' : 'chat-message-received'">
+                            <SkeletonMessSend v-if="index % 2 === 0" />
+                            <SkeletonMess v-else />
+                        </div>
                     </div>
-                    <div class="chat-message-received">
+                </div>
+                <div v-else>
+                    <div v-for="(item, index) in messChat" :key="index">
+                        <div v-bind:class="item.id_user === sessionUser ? 'chat-message-send' : 'chat-message-received'">
+                            <div v-if="item.id_user !== sessionUser">
+                                <img :src="image" alt="">
+                            </div>
+                            <div v-bind:class="item.id_user === sessionUser ? 'message-send' : 'message-received'">{{ item.message }}</div>
+                        </div>
+                    </div>
+                    <div v-if="loading" class="chat-message-received">
                         <img :src="image" alt="">
-                        <div class="message-received">Chào anh</div>
+                        <div class="message-received">
+                            <div class="spinner-message">
+                                <div class="bounce1-message"></div>
+                                <div class="bounce2-message"></div>
+                                <div class="bounce3-message"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="chat-message-send">
-                        <div class="message-send">Chào em</div>
-                    </div>
-                    <div class="chat-message-received">
-                        <img :src="image" alt="">
-                        <div class="message-received">Chào anh</div>
-                    </div>
-                    <div class="chat-message-send">
-                        <div class="message-send">Chào em</div>
-                    </div>
-                    <div class="chat-message-received">
-                        <img :src="image" alt="">
-                        <div class="message-received">Chào anh</div>
-                    </div>
-                    <div class="chat-message-send">
-                        <div class="message-send">Chào em</div>
-                    </div>
-                    <div class="chat-message-received">
-                        <img :src="image" alt="">
-                        <div class="message-received">Chào anh</div>
-                    </div>
-                </div> -->
+                </div>
             </div>
             <div class="footer-chat-left">
                 <div class="input-chat-left">
                     <div class="txt-footer-chat">
-                        <input v-model="message" type="text" placeholder="Type a message">
+                        <input @keyup="keyupMessage" v-model="message" type="text" placeholder="Type a message">
                     </div>
                     <div class="send-footer-chat">
                         <div>
                             <i class="fa fa-smile-o" style="font-size:24px" @click="openIcon"></i>
                         </div>
-                        <div style="margin-top: .2rem">
+                        <div style="margin-top: .2rem" @click="sendSocket">
                             <a>SEND</a>
                         </div>
                     </div>
@@ -92,16 +89,21 @@ import {
     watchEffect
 } from '@vue/runtime-core'
 import ChatAPI from '../../api/ChatAPI'
+import MessAPI from '../../api/MessAPI'
 import queryString from 'query-string'
 import SkeletonMess from '../skeleton/SkeletonMess.vue'
+import SkeletonMessSend from '../skeleton/SkeletonMessSend.vue'
 
 import io from "socket.io-client";
-var connectionOptions =  {
-            // "force new connection" : true,
-            // "reconnectionAttempts": "Infinity", 
-            // "timeout" : 10000,                  
-            "transports" : ["websocket"]
-        };
+import {
+    useRoute
+} from 'vue-router'
+var connectionOptions = {
+    // "force new connection" : true,
+    // "reconnectionAttempts": "Infinity", 
+    // "timeout" : 10000,                  
+    "transports": ["websocket"]
+};
 
 const socket = io.connect('http://localhost:4000', connectionOptions)
 
@@ -110,58 +112,27 @@ export default {
     components: {
         Profile,
         Icon,
-        SkeletonMess
-    },
-    data: () => {
-        return {
-            userTo: null,
-            id: '',
-            fullname: '',
-            image: '',
-            room: '',
-        }
-    },
-    async created() {
-
-        //Get userTo for chat
-        const params = {
-            _id: sessionStorage.getItem('idUser'),
-            userTo: this.$route.params.id
-        }
-
-        const query = '?' + queryString.stringify(params)
-
-        setTimeout(async () => {
-            const resUserTo = await ChatAPI.getUser(query)
-            this.userTo = resUserTo
-            this.fullname = resUserTo.id_userTo.fullname
-            this.image = resUserTo.id_userTo.image[0].url
-            this.id = resUserTo.id_userTo._id
-            this.room = resUserTo.room
-
-            // Khi bấm vào đối tượng muốn chat thì client sẽ gửi lên server
-            // room chat của đối tượng đó
-            socket.emit('room', this.room)
-
-        }, 3000)
-
-    },
-    methods: {
-        sendSocket(){
-            const data = {
-                room: this.room,
-                msg: sessionStorage.getItem('idUser')
-            }
-
-            // Gửi tin nhắn đến đến server có kém room chat
-            socket.emit('send', data)
-        }
+        SkeletonMess,
+        SkeletonMessSend
     },
     setup() {
+
+        const route = useRoute()
 
         const showIcon = ref(false)
         const icon = ref([])
         const message = ref('')
+
+        const sessionUser = ref(sessionStorage.getItem('idUser'))
+
+        const userTo = ref(null)
+        const id = ref('')
+        const fullname = ref('')
+        const image = ref('')
+        const room = ref('')
+
+        const messChat = ref(null)
+        const loading = ref(false)
 
         watchEffect(async () => {
             // Get API Icon
@@ -170,16 +141,109 @@ export default {
             const newData = data.slice(0, 50)
             icon.value = newData
 
+            // Get userTo for chat
+            const params = {
+                _id: sessionStorage.getItem('idUser'),
+                userTo: route.params.id
+            }
+            const query = '?' + queryString.stringify(params)
+            const resUserTo = await ChatAPI.getUser(query)
+
+            // Get list message for chat
+            const paramsMess = {
+                room: resUserTo.room
+            }
+            const queryMess = '?' + queryString.stringify(paramsMess)
+            const resMess = await MessAPI.getRoom(queryMess)
+
+            setTimeout(() => {
+                // Get userTo
+                userTo.value = resUserTo
+                fullname.value = resUserTo.id_userTo.fullname
+                image.value = resUserTo.id_userTo.image[0].url
+                id.value = resUserTo.id_userTo._id
+                room.value = resUserTo.room
+
+                // Get listMess
+                messChat.value = resMess
+
+                // Khi bấm vào đối tượng muốn chat thì client sẽ gửi lên server
+                // room chat của đối tượng đó
+                socket.emit('room', room.value)
+
+            }, 3000)
+
         })
 
         watchEffect(() => {
 
             // Tiến hành nhận tin nhắn
             socket.on('receive', (data) => {
-                console.log(data)
+                
+                const clone = messChat.value
+
+                const newMessChat = [...clone, data]
+
+                messChat.value = newMessChat
+
+            })
+
+            socket.on('typing', (data) => {
+
+                if (data.message === ''){
+                    loading.value = false
+                    return
+                }
+                if (data.message !== '' && loading.value === false){
+                    loading.value = true
+                    return
+                }
+                if (data.message !== '' && loading.value === true){
+                    return
+                }
+
             })
 
         })
+
+        const keyupMessage = () => {
+
+            const data = {
+                room: room.value,
+                message: message.value
+            }
+
+            socket.emit('typing', data)
+
+        }
+
+        const sendSocket = () => {
+            const data = {
+                id_user: sessionStorage.getItem('idUser'),
+                message: message.value,
+                room: room.value
+            }
+
+            const clone = messChat.value
+
+            const newMessChat = [...clone, data]
+
+            messChat.value = newMessChat
+
+            message.value = ''
+
+            socket.emit('send', data)
+
+
+            // on key up for message
+            const keyup = {
+                room: room.value,
+                message: message.value
+            }
+
+            socket.emit('typing', keyup)
+
+        }
 
         const handlerIcon = (value) => {
             message.value += icon.value[value].emoji + ' '
@@ -195,6 +259,16 @@ export default {
             showIcon,
             icon,
             message,
+            userTo,
+            id,
+            fullname,
+            image,
+            room,
+            messChat,
+            sendSocket,
+            sessionUser,
+            loading,
+            keyupMessage
         }
 
     },
@@ -202,6 +276,50 @@ export default {
 </script>
 
 <style>
+
+/* Loading CSS */
+.spinner-message {
+  text-align: center;
+}
+
+.spinner-message > div {
+  width: 13px;
+  height: 13px;
+  background-color: #e4e4e4;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner-message .bounce1-message {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner-message .bounce2-message {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% { 
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+
+/* Loading CSS */
+
 .content-chat-left {
     position: relative;
 }
@@ -360,5 +478,11 @@ export default {
     height: 721px;
     display: grid;
     grid-template-columns: 1.4fr 0.7fr;
+}
+
+@media only screen and (max-width: 600px){
+    .input-chat-left{
+        padding: 1.5rem 0.5rem !important;
+    }
 }
 </style>
