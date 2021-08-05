@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-else>
+                <div v-else class="scrollChat" ref="bodyChat">
                     <div v-for="(item, index) in messChat" :key="index">
                         <div v-bind:class="item.id_user === sessionUser ? 'chat-message-send' : 'chat-message-received'">
                             <div v-if="item.id_user !== sessionUser">
@@ -123,6 +123,8 @@ export default {
         const icon = ref([])
         const message = ref('')
 
+        const bodyChat = ref(null)
+
         const sessionUser = ref(sessionStorage.getItem('idUser'))
 
         const userTo = ref(null)
@@ -179,26 +181,29 @@ export default {
 
             // Tiến hành nhận tin nhắn
             socket.on('receive', (data) => {
-                
+
                 const clone = messChat.value
 
                 const newMessChat = [...clone, data]
 
                 messChat.value = newMessChat
 
+                scrollBottom()
+
             })
 
             socket.on('typing', (data) => {
 
-                if (data.message === ''){
+                if (data.message === '') {
                     loading.value = false
                     return
                 }
-                if (data.message !== '' && loading.value === false){
+                if (data.message !== '' && loading.value === false) {
                     loading.value = true
+                    scrollBottom()
                     return
                 }
-                if (data.message !== '' && loading.value === true){
+                if (data.message !== '' && loading.value === true) {
                     return
                 }
 
@@ -215,11 +220,14 @@ export default {
 
             socket.emit('typing', data)
 
+            scrollBottom()
+
         }
 
         const sendSocket = () => {
             const data = {
                 id_user: sessionStorage.getItem('idUser'),
+                id_userTo: route.params.id,
                 message: message.value,
                 room: room.value
             }
@@ -234,6 +242,7 @@ export default {
 
             socket.emit('send', data)
 
+            scrollBottom()
 
             // on key up for message
             const keyup = {
@@ -243,6 +252,10 @@ export default {
 
             socket.emit('typing', keyup)
 
+        }
+
+        const scrollBottom = () => {
+            bodyChat.value.scrollTop = bodyChat.value.scrollHeight
         }
 
         const handlerIcon = (value) => {
@@ -268,7 +281,9 @@ export default {
             sendSocket,
             sessionUser,
             loading,
-            keyupMessage
+            keyupMessage,
+            bodyChat,
+            scrollBottom
         }
 
     },
@@ -276,46 +291,58 @@ export default {
 </script>
 
 <style>
-
 /* Loading CSS */
 .spinner-message {
-  text-align: center;
+    text-align: center;
 }
 
-.spinner-message > div {
-  width: 13px;
-  height: 13px;
-  background-color: #e4e4e4;
+.spinner-message>div {
+    width: 13px;
+    height: 13px;
+    background-color: #e4e4e4;
 
-  border-radius: 100%;
-  display: inline-block;
-  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 }
 
 .spinner-message .bounce1-message {
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
 }
 
 .spinner-message .bounce2-message {
-  -webkit-animation-delay: -0.16s;
-  animation-delay: -0.16s;
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
 }
 
 @-webkit-keyframes sk-bouncedelay {
-  0%, 80%, 100% { -webkit-transform: scale(0) }
-  40% { -webkit-transform: scale(1.0) }
+
+    0%,
+    80%,
+    100% {
+        -webkit-transform: scale(0)
+    }
+
+    40% {
+        -webkit-transform: scale(1.0)
+    }
 }
 
 @keyframes sk-bouncedelay {
-  0%, 80%, 100% { 
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  } 40% { 
-    -webkit-transform: scale(1.0);
-    transform: scale(1.0);
-  }
+
+    0%,
+    80%,
+    100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    40% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+    }
 }
 
 /* Loading CSS */
@@ -402,13 +429,13 @@ export default {
 }
 
 .chat-message-send {
-    margin-top: .5rem;
+    margin: .8rem 0;
     display: flex;
     justify-content: flex-end;
 }
 
 .chat-message-received {
-    margin-top: .5rem;
+    margin: .8rem 0;
     display: flex;
 }
 
@@ -428,7 +455,13 @@ export default {
 }
 
 .body-chat-left {
-    padding: .5rem 1rem 1rem 1rem;
+    padding: 0 1rem;
+    height: 530px;
+    /* overflow-y: scroll; */
+    overflow: hidden;
+}
+
+.scrollChat {
     height: 530px;
     overflow-y: scroll;
 }
@@ -480,9 +513,18 @@ export default {
     grid-template-columns: 1.4fr 0.7fr;
 }
 
-@media only screen and (max-width: 600px){
-    .input-chat-left{
+@media only screen and (max-width: 600px) {
+    .input-chat-left {
         padding: 1.5rem 0.5rem !important;
+    }
+
+    .body-chat-left {
+        height: 500px !important;
+    }
+
+    .scrollChat {
+        height: 500px !important;
+        padding-bottom: 3.3rem;
     }
 }
 </style>

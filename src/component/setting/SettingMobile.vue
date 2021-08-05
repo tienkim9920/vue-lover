@@ -4,7 +4,8 @@
         <div class="header-setting-mobile">
             <div class="d-flex justify-content-center">
                 <div class="info-setting-mobile">
-                    <img :src="image" alt="">
+                    <img v-if="image" :src="image" alt="">
+                    <img v-else src="../../assets/avt1.jpg" alt="">
                     <h3>{{ profile.fullname }} <span>{{ profile.age }}</span></h3>
                 </div>
             </div>
@@ -46,7 +47,7 @@ export default {
     data: () => {
         return {
             profile: {},
-            image: ''
+            image: null
         }
     },
     async created() {
@@ -55,7 +56,10 @@ export default {
 
         this.profile = user
 
-        this.image = user.image[0].url
+        setTimeout(() => {
+            this.image = user.image[0].url
+        }, 2000)
+        
 
     }
 }

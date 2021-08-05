@@ -97,6 +97,13 @@ body {
     height: 10px;
 }
 
+.skeleton.title-chat {
+    width: 69%;
+    height: 15px;
+    margin-left: 1rem;
+    margin-top: 2.5rem;
+}
+
 .skeleton.title-circle {
     margin-left: 1rem;
     margin-top: 1.5rem;
@@ -122,6 +129,12 @@ body {
     border-radius: 50%;
 }
 
+.skeleton.chat {
+    width: 76px;
+    height: 73px;
+    border-radius: 50%;
+}
+
 .skeleton.thumbnail {
     width: 100%;
 }
@@ -136,6 +149,13 @@ body {
 
 .skeleton-wrapper-circle {
     padding: 5px 10px;
+    position: relative;
+    overflow: hidden
+}
+
+.skeleton-wrapper-chat {
+    padding: 1rem 0rem 1rem 1rem;
+    border-bottom: 1px solid #f3f3f3;
     position: relative;
     overflow: hidden
 }
@@ -165,6 +185,10 @@ body {
 
 .skeleton-circle{
     display: flex;
+}
+
+.skeleton-chat{
+    display: flex !important;
 }
 
 /* Theme */
@@ -425,10 +449,6 @@ body {
 
     .message-received {
         border-radius: 2vw 2vw 2vw .2vw !important;
-    }
-
-    .body-chat-left {
-        height: 499px !important;
     }
 
     .redirect-message {

@@ -5,6 +5,33 @@
         <h1>Lover</h1>
     </div>
 </div>
+<transition name="profile" appear>
+    <div class="show-matches" v-if="showMatch">
+        <div class="profile-show-matches profile-header">
+            <div class="img-profile-header">
+                <div v-for="(item, index) in showMatch.id_userTo.image" :key="index">
+                    <img v-bind:class="(showImageMatch === index) ? 'image-show-matches active-image-matches' : 'image-show-matches unactive-image-matches'" :src="item.url" alt="">
+                </div>
+            </div>
+
+            <div class="view-title-matches">
+                <span>IT'S A</span>
+                <h1>MATCH!</h1>
+            </div>
+            <a class="close-show-matches">
+                <i class="fa fa-remove" @click="handlerCloseMatch"></i>
+            </a>
+            <div class="count-image-line" v-bind:style="{ gridTemplateColumns: gridTemplateColumnsMatches }">
+                <div v-for="(item, index) in showMatch.id_userTo.image" :key="index" v-bind:class="(showImageMatch === index) ? 'active-image-line' : 'unactive-image-line'">
+                </div>
+            </div>
+            <a class="view-image arrow-next" v-if="showImageMatch < lengthMatch - 1" @click="nextImageMatch">
+                <i class="fa fa-chevron-right" style="font-size: 26px; color: #fff"></i></a>
+            <a class="view-image arrow-prev" v-if="showImageMatch !== 0" @click="prevImageMatch">
+                <i class="fa fa-chevron-left" style="font-size: 26px; color: #fff"></i></a>
+        </div>
+    </div>
+</transition>
 <div class="group-doituong" v-if="listMatches">
     <div v-for="(user, index) in listMatches" :key="index">
         <div v-bind:class="(showUser === index) ? 'list-doituong active' : 'list-doituong unactive'">
@@ -154,7 +181,11 @@ export default {
             showImage: 0,
             gridTemplateColumns: '',
             msgEnd: false,
-            length: null
+            length: null,
+            gridTemplateColumnsMatches: '',
+            showMatch: null,
+            showImageMatch: 0,
+            lengthMatch: null
         }
     },
     async created() {
@@ -186,6 +217,16 @@ export default {
         prevImage() {
             this.showImage = this.showImage - 1
         },
+        nextImageMatch() {
+            this.showImageMatch = this.showImageMatch + 1
+        },
+        prevImageMatch() {
+            this.showImageMatch = this.showImageMatch - 1
+        },
+        handlerCloseMatch() {
+            this.showMatch = null
+            this.showImageMatch = 0
+        },
         async clickUnlike(value) {
 
             const body = {
@@ -214,6 +255,14 @@ export default {
             const res = await MatchesAPI.supper(body)
             console.log(res)
 
+            // Kiểm tra msg được trả về để biết đối tượng có được matche với nhau không
+            // Nếu có thì hiện lên thông báo
+            if (res.msg === 'Matches') {
+                this.showMatch = res.match
+                this.lengthMatch = res.match.id_userTo.image.length
+                this.gridTemplateColumnsMatches = `repeat(${this.showMatch[this.showUser].id_userTo.image.length}, minmax(60px, 1fr))`
+            }
+
             if (this.showUser === this.listMatches.length - 1) {
                 this.msgEnd = true
                 this.showUser = this.showUser + 1
@@ -232,6 +281,14 @@ export default {
 
             const res = await MatchesAPI.like(body)
             console.log(res)
+
+            // Kiểm tra msg được trả về để biết đối tượng có được matche với nhau không
+            // Nếu có thì hiện lên thông báo
+            if (res.msg === 'Matches') {
+                this.showMatch = res.match
+                this.lengthMatch = res.match.id_userTo.image.length
+                this.gridTemplateColumnsMatches = `repeat(${this.showMatch.id_userTo.image.length}, minmax(60px, 1fr))`
+            }
 
             if (this.showUser === this.listMatches.length - 1) {
                 this.msgEnd = true
@@ -347,6 +404,22 @@ export default {
     width: 100%;
 }
 
+.close-show-matches {
+    position: absolute;
+    top: 1.5rem;
+    left: 22.5%;
+    color: #fff;
+    text-decoration: none;
+}
+
+.close-show-matches:hover {
+    color: #ececec;
+}
+
+.close-show-matches i {
+    font-size: 26px;
+}
+
 .active-image-line {
     height: 5px;
     background-color: #fff;
@@ -422,6 +495,64 @@ export default {
 
 .unactive-image-matches {
     display: none;
+}
+
+.show-matches {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.profile-show-matches {
+    position: absolute;
+    left: 50%;
+}
+
+.image-show-matches {
+    width: 380px !important;
+    height: 710px !important;
+}
+
+.view-title-matches{
+    position: absolute;
+    top: 50%;
+    left: 2.5%;
+    text-align: center;
+    font-style: italic;
+    color: #31FFC7;
+}
+
+.view-title-matches span{
+    font-size: 1.8rem;
+}
+
+.view-title-matches h1{
+    font-size: 5rem;
+}
+
+@media only screen and (max-width: 600px) {
+    .profile-show-matches {
+        left: 0% !important;
+    }
+
+    .image-show-matches {
+        width: 100% !important;
+        height: 662px !important
+    }
+
+    .show-matches {
+        height: 90% !important;
+    }
+
+    .close-show-matches {
+        left: 90% !important;
+    }
+
+    .view-title-matches{
+        left: 15% !important;
+    }
 }
 
 @keyframes fade-matches-in {

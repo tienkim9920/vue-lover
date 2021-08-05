@@ -4,73 +4,68 @@
         <img src="../../assets/icon.png" alt="">
         <h1>Messages</h1>
     </div>
-    <!-- <div class="list-matches-mobile">
-        New Matches
-    </div> -->
 </div>
-<transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter" class="mr-pd-nav-message">
-    <div v-for="item in chatlist" :key="item" :data-index="item.id">
-        <router-link :to="'/home/message/' + item.id" class="wrapper-chat-user link-chat-user list-message-mobile">
+
+<div v-if="!chatlist">
+    <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter" class="mr-pd-nav-message">
+        <div v-for="index in [0, 1, 2, 3]" :key="index" :data-index="index">
+            <SkeletonChat />
+        </div>
+    </transition-group>
+</div>
+<div v-else>
+    <div class="mr-pd-nav-message" v-for="(item, index) in chatlist" :key="index" :data-index="index">
+        <router-link :to="'/home/message/' + item.id_userTo._id" class="wrapper-chat-user link-chat-user list-message-mobile">
             <div>
-                <img src="../../assets/avt2.jpg" alt="">
+                <img :src="item.id_userTo.image[0].url" alt="">
             </div>
             <div class="chat-user-right">
                 <div>
-                    <span style="font-size: 1.2rem">{{ item.name }}</span>
+                    <span style="font-size: 1.2rem;">{{ item.id_userTo.fullname }}</span>
                 </div>
                 <div>
-                    <span class="message-user-first">{{ formatMessage(item.message) }}</span>
+                    <span v-if="item.message.length > 33" class="message-user-first">{{ item.message.slice(0, 33) + '...' }}</span>
+                    <span v-else class="message-user-first">{{ item.message }}</span>
                 </div>
+                <!-- <div class="d-flex">
+                    <div class="online"></div>
+                    <span class="message-user-first">Online</span>
+                </div> -->
             </div>
         </router-link>
     </div>
-</transition-group>
+</div>
 </template>
 
 <script>
 import gsap from 'gsap'
+import ChatAPI from '../../api/ChatAPI'
+import queryString from 'query-string'
+import SkeletonChat from '../skeleton/SkeletonChat.vue'
 
 export default {
     name: 'NavMessage',
+    components: {
+        SkeletonChat
+    },
     data: () => {
         return {
-            chatlist: [{
-                    id: 1,
-                    name: 'Tiền Kim',
-                    message: 'Xin chào bạn tên là gì =)) cho mình làm quen nha',
-                },
-                {
-                    id: 2,
-                    name: 'Tiền Kim',
-                    message: 'Chào bạn mình tên là Tiền Kim',
-                },
-                {
-                    id: 3,
-                    name: 'Tiền Kim',
-                    message: 'Xin chào bạn tên là gì =)) cho mình làm quen nha',
-                },
-                {
-                    id: 4,
-                    name: 'Tiền Kim',
-                    message: 'Chào bạn mình tên là Tiền Kim',
-                },
-                {
-                    id: 5,
-                    name: 'Tiền Kim',
-                    message: 'Xin chào bạn tên là gì =)) cho mình làm quen nha',
-                },
-                {
-                    id: 6,
-                    name: 'Tiền Kim',
-                    message: 'Chào bạn mình tên là Tiền Kim',
-                },
-                {
-                    id: 7,
-                    name: 'Tiền Kim',
-                    message: 'Chào bạn mình tên là Tiền Kim',
-                },
-            ],
+            chatlist: null,
         }
+    },
+    async created() {
+
+        const params = {
+            _id: sessionStorage.getItem('idUser')
+        }
+
+        const query = '?' + queryString.stringify(params)
+
+        const res = await ChatAPI.getList(query)
+
+        setTimeout(() => {
+            this.chatlist = res
+        }, 3000)
     },
     methods: {
         formatMessage(value) {
@@ -92,9 +87,9 @@ export default {
             gsap.to(el, {
                 opacity: 1,
                 y: 0,
-                duration: 0.2,
+                duration: 0.4,
                 onComplete: done,
-                delay: el.dataset.index * 0.1
+                delay: el.dataset.index * 0.2
             })
         }
 
@@ -108,6 +103,7 @@ export default {
 </script>
 
 <style>
+
 .list-message-mobile {
     border-bottom: 1px solid #f3f3f3;
 }
@@ -125,6 +121,15 @@ export default {
 .mr-pd-nav-message {
     margin: 4.3rem 0 4rem 0;
 }
+
+.online {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #14d314;
+    margin-top: .45rem;
+}
+
 
 /* .list-matches-mobile{
     margin-top: 1.15rem;
