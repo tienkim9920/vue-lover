@@ -254,6 +254,7 @@ export default {
             const data = {
                 id_user: sessionStorage.getItem('idUser'),
                 id_userTo: route.params.id,
+                message: message.value,
                 room: room.value
             }
 
