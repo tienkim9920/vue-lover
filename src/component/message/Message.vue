@@ -9,7 +9,17 @@
                 <router-link v-else :to="'/home/profile/' + id">
                     <div class="title-header-chat-left">
                         <img :src="image" alt="">
-                        <h4>{{ fullname }}</h4>
+                        <div>
+                            <span class="fullname-chat-online">{{ fullname }}</span>
+                            <div v-if="statusActive === userTo.id_userTo._id" class="d-flex" style="margin-left: 1rem">
+                                <div class="online"></div>
+                                <span class="status-online">Online</span>
+                            </div>
+                            <div v-else class="d-flex" style="margin-left: 1rem">
+                                <div class="offline"></div>
+                                <span class="status-online">Offline</span>
+                            </div>
+                        </div>
                     </div>
                 </router-link>
                 <div class="redirect-message">
@@ -93,19 +103,10 @@ import MessAPI from '../../api/MessAPI'
 import queryString from 'query-string'
 import SkeletonMess from '../skeleton/SkeletonMess.vue'
 import SkeletonMessSend from '../skeleton/SkeletonMessSend.vue'
-
-import io from "socket.io-client";
 import {
     useRoute
 } from 'vue-router'
-var connectionOptions = {
-    // "force new connection" : true,
-    // "reconnectionAttempts": "Infinity", 
-    // "timeout" : 10000,                  
-    "transports": ["websocket"]
-};
-
-const socket = io.connect('http://localhost:4000', connectionOptions)
+import socket from '../../socket/socket.js'
 
 export default {
     name: 'Message',
@@ -136,6 +137,8 @@ export default {
         const messChat = ref(null)
         const loading = ref(false)
 
+        const statusActive = ref(null)
+
         watchEffect(async () => {
             // Get API Icon
             const res = await fetch('https://cdn.jsdelivr.net/npm/emoji-picker-element-data@%5E1/en/emojibase/data.json')
@@ -158,14 +161,16 @@ export default {
             const queryMess = '?' + queryString.stringify(paramsMess)
             const resMess = await MessAPI.getRoom(queryMess)
 
+            socket.emit('login', sessionStorage.getItem('idUser'))
+
             setTimeout(() => {
                 // Get userTo
                 userTo.value = resUserTo
                 fullname.value = resUserTo.id_userTo.fullname
                 image.value = resUserTo.id_userTo.image[0].url
                 id.value = resUserTo.id_userTo._id
-                room.value = resUserTo.room
 
+                room.value = resUserTo.room
                 // Get listMess
                 messChat.value = resMess
 
@@ -173,11 +178,31 @@ export default {
                 // room chat của đối tượng đó
                 socket.emit('room', room.value)
 
+                // Kiểm tra xem đối phương có online hay không
+                socket.emit('check-active', route.params.id)
+
+                // Gửi đến đối phương rằng mình đã online
+                const active = {
+                    _id: sessionStorage.getItem('idUser'),
+                    room: room.value
+                }
+
+                socket.emit('active', active)
+
             }, 3000)
 
         })
 
         watchEffect(() => {
+
+            // Tiến hành nhận lúc user online
+            socket.on('active', data => {
+                statusActive.value = data._id
+            })
+
+            socket.on('check-active', () => {
+                statusActive.value = route.params.id
+            })
 
             // Tiến hành nhận tin nhắn
             socket.on('receive', (data) => {
@@ -192,6 +217,7 @@ export default {
 
             })
 
+            // Tiếp hành nhận socket lúc bấm phím
             socket.on('typing', (data) => {
 
                 if (data.message === '') {
@@ -228,7 +254,6 @@ export default {
             const data = {
                 id_user: sessionStorage.getItem('idUser'),
                 id_userTo: route.params.id,
-                message: message.value,
                 room: room.value
             }
 
@@ -283,7 +308,8 @@ export default {
             loading,
             keyupMessage,
             bodyChat,
-            scrollBottom
+            scrollBottom,
+            statusActive
         }
 
     },
@@ -291,6 +317,28 @@ export default {
 </script>
 
 <style>
+.status-online {
+    margin-left: .5rem;
+    font-size: 1rem;
+    font-family: 'Raleway', sans-serif;
+}
+
+.online {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #14d314;
+    margin-top: .45rem;
+}
+
+.offline {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #adadad;
+    margin-top: .45rem;
+}
+
 /* Loading CSS */
 .spinner-message {
     text-align: center;
@@ -440,6 +488,7 @@ export default {
 }
 
 .message-send {
+    /* width: 410px; */
     color: #fff;
     background-color: #3D9FFF;
     padding: .6rem 1.3rem;
@@ -447,6 +496,7 @@ export default {
 }
 
 .message-received {
+    /* width: 410px; */
     color: #323232;
     background-color: #F5F7FA;
     padding: .6rem 1.3rem;
@@ -478,14 +528,14 @@ export default {
     margin: .8rem;
 }
 
-.title-header-chat-left h4 {
-    margin-top: .5rem;
+.fullname-chat-online {
     margin-left: 1rem;
+    font-size: 1.2rem;
 }
 
 .title-header-chat-left img {
-    width: 49px;
-    height: 45px;
+    width: 52px;
+    height: 47px;
     border-radius: 50%;
     border: 4px solid #fff;
     box-shadow: 0 0 0.25em 0.25em rgba(136, 136, 136, 0.25);
@@ -526,5 +576,13 @@ export default {
         height: 500px !important;
         padding-bottom: 3.3rem;
     }
+
+    /* .message-send {
+        width: 410px !important;
+    }
+
+    .message-received {
+        width: 410px !important;
+    } */
 }
 </style>
