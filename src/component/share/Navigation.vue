@@ -6,7 +6,7 @@
                 <img v-if="!profile" src="../../assets/avt1.jpg" alt="">
                 <img v-else :src="profile.url" alt="">
             </router-link>
-            <router-link to="/home/setting" class="myprofile-header" style="margin-top: .2rem">
+            <router-link to="/home/setting" class="myprofile-header" style="margin-top: .5rem">
                 <span>My Profile</span>
                 <i class="fa fa-chevron-right" style="color: #fff; margin-top: .5rem"></i>
             </router-link>
@@ -333,9 +333,10 @@ export default {
 }
 
 .navigation-header img {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
+    border: 3px solid #fff;
 }
 
 .navigation-header a {
