@@ -2,7 +2,10 @@
 <div class="navigation">
     <div class="fixed-nav-header">
         <div class="navigation-header">
-            <router-link to="/home"><img src="../../assets/avt1.jpg" alt=""></router-link>
+            <router-link to="/home">
+                <img v-if="!profile" src="../../assets/avt1.jpg" alt="">
+                <img v-else :src="profile.url" alt="">
+            </router-link>
             <router-link to="/home/setting" class="myprofile-header" style="margin-top: .2rem">
                 <span>My Profile</span>
                 <i class="fa fa-chevron-right" style="color: #fff; margin-top: .5rem"></i>
@@ -46,17 +49,22 @@
     </div>
 
     <div class="navigation-message" v-if="activeNav === 'messages'">
-        <div @click="checkingMessage(item.id)" v-for="item in chatlist" :key="item">
-            <router-link :to="'/home/message/' + item.id" class="link-chat-user" exact-active-class="exact-active" v-bind:class="(checkMessage === item.id) ? 'wrapper-chat-user active-chat-user' : 'wrapper-chat-user unactive-chat-user'">
+        <div @click="checkingMessage(item._id)" v-for="item in chatlist" :key="item._id">
+            <router-link :to="'/home/message/' + item.id_userTo._id" class="link-chat-user" exact-active-class="exact-active" v-bind:class="(checkMessage === item._id) ? 'wrapper-chat-user active-chat-user' : 'wrapper-chat-user unactive-chat-user'">
                 <div>
-                    <img src="../../assets/avt2.jpg" alt="">
+                    <img :src="item.id_userTo.image[0].url" alt="">
                 </div>
                 <div class="chat-user-right">
                     <div>
-                        <span style="font-size: 1.2rem">{{ item.name }}</span>
+                        <span style="font-size: 1.2rem">{{ item.id_userTo.fullname  }}</span>
                     </div>
-                    <div>
-                        <span class="message-user-first">{{ formatMessage(item.message) }}</span>
+                    <div class="d-flex" v-if="item.active">
+                        <div class="online"></div>
+                        <span class="status-online">Online</span>
+                    </div>
+                    <div class="d-flex" v-else>
+                        <div class="offline"></div>
+                        <span class="status-online">Offline</span>
                     </div>
                 </div>
             </router-link>
@@ -69,6 +77,12 @@
 import SkeletonUser from '../skeleton/SkeletonUser.vue'
 import ChatAPI from '../../api/ChatAPI'
 import queryString from 'query-string'
+import UserAPI from '../../api/UserAPI'
+import socket from '../../socket/socket.js'
+import {
+    ref,
+    watchEffect
+} from '@vue/runtime-core'
 
 export default {
     name: 'Navigation',
@@ -79,22 +93,13 @@ export default {
         return {
             activeNav: 'matches',
             user: null,
-            chatlist: [{
-                    id: 1,
-                    name: 'Tiền Kim',
-                    message: 'Xin chào bạn tên là gì =)) cho mình làm quen nha',
-                },
-                {
-                    id: 2,
-                    name: 'Phạm Đoàn Mỹ Hân',
-                    message: 'Chào bạn mình tên là Mỹ Hân',
-                }
-            ],
-            checkMessage: ''
+            checkMessage: '',
+            profile: null
         }
     },
     async created() {
 
+        // Get list matches
         const params = {
             _id: sessionStorage.getItem('idUser')
         }
@@ -103,8 +108,12 @@ export default {
 
         const listMatches = await ChatAPI.getList(query)
 
+        // Get profile
+        const res = await UserAPI.detail(sessionStorage.getItem('idUser'))
+
         setTimeout(() => {
             this.user = listMatches
+            this.profile = res.image[0]
         }, 3000)
 
     },
@@ -128,6 +137,52 @@ export default {
     },
     setup() {
 
+        const chatlist = ref(null)
+
+        watchEffect(async () => {
+
+            // Khi vào thì client sẽ gửi lên server event login
+            // Để server nhận và lưu userId vào bộ nhớ
+            socket.emit('login', sessionStorage.getItem('idUser'))
+
+            // Sau 3 giây sẽ gửi tiếp getOnline lên server
+            // Để lấy danh sách user đang có trong bộ nhớ online
+            setTimeout(() => {
+                socket.emit('getOnline')
+            }, 3000)
+
+        })
+
+        watchEffect(() => {
+
+            // Nhận danh sách user đang online có trong bộ nhớ
+            socket.on('getOnline', async (client) => {
+
+                const params = {
+                    _id: sessionStorage.getItem('idUser')
+                }
+
+                const query = '?' + queryString.stringify(params)
+
+                const res = await ChatAPI.getList(query)
+
+                for (let i = 0; i < res.length; i++) {
+                    for (let j = 0; j < client.length; j++) {
+                        if (res[i].id_userTo._id.toString() === client[j]._id.toString()) {
+                            res[i].active = true
+                        }
+                    }
+                }
+                chatlist.value = res
+
+                console.log(chatlist.value)
+            })
+
+        })
+
+        return {
+            chatlist
+        }
     },
 }
 </script>

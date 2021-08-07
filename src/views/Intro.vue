@@ -145,7 +145,11 @@ export default {
 
                 sessionStorage.setItem('idUser', res.userID)
 
-                router.push('/home')
+                if (res.image.length < 1){
+                    router.push('/home/setting/edit')
+                }else{
+                    router.push('/home')
+                }
 
             } else {
 

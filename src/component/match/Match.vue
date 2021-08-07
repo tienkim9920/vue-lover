@@ -5,9 +5,10 @@
         <h1>Lover</h1>
     </div>
 </div>
-<transition name="profile" appear>
+<div class="group-doituong" v-if="listMatches">
+    <transition name="profile" appear>
     <div class="show-matches" v-if="showMatch">
-        <div class="profile-show-matches profile-header">
+        <div class="profile-header">
             <div class="img-profile-header">
                 <div v-for="(item, index) in showMatch.id_userTo.image" :key="index">
                     <img v-bind:class="(showImageMatch === index) ? 'image-show-matches active-image-matches' : 'image-show-matches unactive-image-matches'" :src="item.url" alt="">
@@ -32,7 +33,6 @@
         </div>
     </div>
 </transition>
-<div class="group-doituong" v-if="listMatches">
     <div v-for="(user, index) in listMatches" :key="index">
         <div v-bind:class="(showUser === index) ? 'list-doituong active' : 'list-doituong unactive'">
             <div class="detail-doituong">
@@ -407,9 +407,10 @@ export default {
 .close-show-matches {
     position: absolute;
     top: 1.5rem;
-    left: 22.5%;
+    left: 91%;
     color: #fff;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .close-show-matches:hover {
@@ -498,12 +499,13 @@ export default {
 }
 
 .show-matches {
-    position: fixed;
-    width: 100%;
-    height: 100%;
     z-index: 9999;
+    position: absolute;
+    display: flex;
+    justify-content: center;
     background-color: rgba(0, 0, 0, 0.6);
 }
+
 
 .profile-show-matches {
     position: absolute;
@@ -515,20 +517,20 @@ export default {
     height: 710px !important;
 }
 
-.view-title-matches{
+.view-title-matches {
     position: absolute;
     top: 50%;
-    left: 2.5%;
+    left: 10%;
     text-align: center;
     font-style: italic;
     color: #31FFC7;
 }
 
-.view-title-matches span{
+.view-title-matches span {
     font-size: 1.8rem;
 }
 
-.view-title-matches h1{
+.view-title-matches h1 {
     font-size: 5rem;
 }
 
@@ -550,7 +552,7 @@ export default {
         left: 90% !important;
     }
 
-    .view-title-matches{
+    .view-title-matches {
         left: 15% !important;
     }
 }

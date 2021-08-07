@@ -23,11 +23,13 @@
                     </div>
                 </router-link>
                 <div class="redirect-message">
+                    <i @click="scrollBottom" class="fa fa-caret-square-o-down icon-down-chat-left"></i>
                     <router-link to="/home">
                         <i class="fa fa-close icon-header-chat-left"></i>
                     </router-link>
                 </div>
                 <div class="redirect-message-mobile">
+                    <i @click="scrollBottom" class="fa fa-caret-square-o-down icon-down-chat-left"></i>
                     <router-link to="/home/message">
                         <i class="fa fa-close icon-header-chat-left"></i>
                     </router-link>
@@ -72,8 +74,11 @@
                         <div>
                             <i class="fa fa-smile-o" style="font-size:24px" @click="openIcon"></i>
                         </div>
-                        <div style="margin-top: .2rem" @click="sendSocket">
+                        <div v-if="message" style="margin-top: .2rem" @click="sendSocket">
                             <a>SEND</a>
+                        </div>
+                        <div v-else style="margin-top: .2rem;">
+                            <a style="background-color: #d3d3d3 !important;">SEND</a>
                         </div>
                     </div>
                 </div>
@@ -245,8 +250,6 @@ export default {
             }
 
             socket.emit('typing', data)
-
-            scrollBottom()
 
         }
 
@@ -550,6 +553,21 @@ export default {
     padding: .4rem .6rem;
     border: 1px solid #FE5266;
     margin: 1.2rem .8rem .8rem .8rem;
+}
+
+.icon-down-chat-left {
+    color: #52d6fe;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: .4rem .6rem;
+    border: 1px solid #52d6fe;
+    margin: 1.2rem .4rem .8rem .4rem;
+}
+
+.icon-down-chat-left:hover {
+    color: #fff;
+    background-color: #52d6fe;
 }
 
 .icon-header-chat-left:hover {

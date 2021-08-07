@@ -16,7 +16,7 @@
                     <a data-bs-dismiss="modal" aria-label="Close" @click="onDelete">Yes</a>
                 </div>
                 &nbsp;
-                <div class="btn-edit-setting">
+                <div class="btn-edit-setting" data-bs-dismiss="modal" aria-label="Close">
                     <a>No</a>
                 </div>
             </div>

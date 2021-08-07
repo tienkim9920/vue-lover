@@ -105,8 +105,6 @@ export default {
                     }
                 }
                 chatlist.value = res
-
-                console.log(chatlist.value)
             })
 
         })
