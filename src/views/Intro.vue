@@ -143,7 +143,7 @@ export default {
                 document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
                     "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
 
-                sessionStorage.setItem('idUser', res.user.userID)
+                sessionStorage.setItem('idUser', res.user._id)
 
                 if (res.user.image.length < 1) {
                     router.push('/home/setting/edit')
