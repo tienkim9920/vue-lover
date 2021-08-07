@@ -150,6 +150,13 @@ export default {
             const data = await res.json()
             const newData = data.slice(0, 50)
             icon.value = newData
+        })
+
+        watchEffect(async () => {
+
+            if (route.params.id){
+                console.log(route.params.id)
+            }
 
             // Get userTo for chat
             const params = {

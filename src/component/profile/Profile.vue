@@ -37,36 +37,53 @@
 </template>
 
 <script>
+import { ref } from '@vue/reactivity'
 import UserAPI from '../../api/UserAPI'
+import { watchEffect } from '@vue/runtime-core'
+import { useRoute } from 'vue-router'
 
 export default {
     name: 'Profile',
-    data: () => {
-        return {
-            profile: {},
-            showImage: 0,
-            gridTemplateColumns: '',
-            length: ''
-        }
-    },
-    async created() {
+    setup() {
         
-        const user = await UserAPI.detail(this.$route.params.id)
+        const route = useRoute()
 
-        this.profile = user
-        this.length = user.image.length - 1
+        const profile = ref({})
+        const showImage = ref(0)
+        const gridTemplateColumns = ref('')
+        const length = ref('')
 
-        this.gridTemplateColumns = `repeat(${user.image.length}, minmax(60px, 1fr))`
-    },
-    methods: {
-        nextImage() {
-            this.showImage = this.showImage + 1
-        },
+        watchEffect(async () => {
 
-        prevImage() {
-            this.showImage = this.showImage - 1
-        },
-    },
+            if (route.params.id){
+                console.log(route.params.id)
+            }
+
+            const user = await UserAPI.detail(route.params.id)
+
+            profile.value = user
+            length.value = user.image.length - 1
+
+            gridTemplateColumns.value = `repeat(${user.image.length}, minmax(60px, 1fr))`
+        })
+
+        const nextImage = () => {
+            showImage.value = showImage.value + 1
+        }
+
+        const prevImage = () => {
+            showImage.value = showImage.value - 1
+        }
+
+        return {
+            profile,
+            showImage,
+            gridTemplateColumns,
+            length,
+            nextImage,
+            prevImage
+        }
+    }
 }
 </script>
 
