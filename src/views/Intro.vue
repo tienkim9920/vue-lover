@@ -162,14 +162,14 @@ export default {
                     email: '',
                     phone: '',
                     password: '',
-                    userID: fb.userID,
+                    userID: user.userID,
                     image: []
                 }
 
                 const newUser = await UserAPI.addUser(body)
 
-                const res = await MatchesAPI.createObject(newUser)
-                console.log(res)
+                const resFB = await MatchesAPI.createObject(newUser)
+                console.log(resFB)
 
                 sessionStorage.setItem('idUser', newUser._id)
 
