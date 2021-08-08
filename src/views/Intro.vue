@@ -57,9 +57,9 @@
                     </p>
                 </div>
                 <div class="group-btn-login">
-                    <div class="btn-facebook">
+                    <!-- <div class="btn-facebook">
                         <v-facebook-login app-id="1188277554976347" @login="loginFacebook"></v-facebook-login>
-                    </div>
+                    </div> -->
                     <div class="btn-login-lover" data-bs-toggle="modal" data-bs-target="#signin">
                         <a class="login-lover" data-bs-dismiss="modal" aria-label="Close">Log in With Phone Number</a>
                     </div>
@@ -92,20 +92,20 @@
 </template>
 
 <script>
-import VFacebookLogin from 'vue-facebook-login-component-next'
+// import VFacebookLogin from 'vue-facebook-login-component-next'
 import SignIn from '../component/intro/SignIn.vue'
 import SignUp from '../component/intro/SignUp.vue'
-import {
-    useRouter
-} from 'vue-router'
+// import {
+//     useRouter
+// } from 'vue-router'
 
-import UserAPI from '../api/UserAPI'
-import MatchesAPI from '../api/MatchesAPI'
+// import UserAPI from '../api/UserAPI'
+// import MatchesAPI from '../api/MatchesAPI'
 
 export default {
     name: "Intro",
     components: {
-        VFacebookLogin,
+        // VFacebookLogin,
         SignIn,
         SignUp
     },
@@ -117,76 +117,76 @@ export default {
 
     },
 
-    setup() {
-        const router = useRouter()
+    // setup() {
+    //     const router = useRouter()
 
-        const loginFacebook = async () => {
+    //     const loginFacebook = async () => {
 
-            // Get session by return server
-            const user = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
+    //         // Get session by return server
+    //         const user = JSON.parse(sessionStorage.getItem('fbssls_1188277554976347')).authResponse
 
-            // Save it in object
-            const fb = {
-                userID: user.userID,
-            }
+    //         // Save it in object
+    //         const fb = {
+    //             userID: user.userID,
+    //         }
 
-            console.log(fb)
+    //         console.log(fb)
 
-            // Implement call api checking facebook
-            const res = await UserAPI.facebook(fb)
+    //         // Implement call api checking facebook
+    //         const res = await UserAPI.facebook(fb)
 
-            console.log(res)
+    //         console.log(res)
 
-            if (res.msg === 'Account exist') {
-                document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
-                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
-                document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
-                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+    //         if (res.msg === 'Account exist') {
+    //             document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
+    //                 "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+    //             document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
+    //                 "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
 
-                sessionStorage.setItem('idUser', res.user._id)
+    //             sessionStorage.setItem('idUser', res.user._id)
 
-                if (res.user.image.length < 1) {
-                    router.push('/home/setting/edit')
-                } else {
-                    router.push('/home')
-                }
+    //             if (res.user.image.length < 1) {
+    //                 router.push('/home/setting/edit')
+    //             } else {
+    //                 router.push('/home')
+    //             }
 
-            } else {
+    //         } else {
 
-                const body = {
-                    fullname: '',
-                    age: '',
-                    address: '',
-                    gender: '',
-                    bio: '',
-                    email: '',
-                    phone: '',
-                    password: '',
-                    userID: user.userID,
-                    image: []
-                }
+    //             const body = {
+    //                 fullname: '',
+    //                 age: '',
+    //                 address: '',
+    //                 gender: '',
+    //                 bio: '',
+    //                 email: '',
+    //                 phone: '',
+    //                 password: '',
+    //                 userID: user.userID,
+    //                 image: []
+    //             }
 
-                const newUser = await UserAPI.addUser(body)
+    //             const newUser = await UserAPI.addUser(body)
 
-                const resFB = await MatchesAPI.createObject(newUser)
-                console.log(resFB)
+    //             const resFB = await MatchesAPI.createObject(newUser)
+    //             console.log(resFB)
 
-                sessionStorage.setItem('idUser', newUser._id)
+    //             sessionStorage.setItem('idUser', newUser._id)
 
-                document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
-                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
-                document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
-                    "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+    //             document.getElementsByClassName('modal-backdrop')[0].setAttribute("style",
+    //                 "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
+    //             document.getElementsByClassName('modal-backdrop')[1].setAttribute("style",
+    //                 "background-color: transparent !important; width: 0vw !important; height: 0vh !important; position: none !important;")
 
-                router.push('/home/setting/edit')
+    //             router.push('/home/setting/edit')
 
-            }
+    //         }
 
-        }
-        return {
-            loginFacebook
-        }
-    }
+    //     }
+    //     return {
+    //         loginFacebook
+    //     }
+    // }
 
 }
 </script>

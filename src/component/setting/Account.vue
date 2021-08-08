@@ -56,8 +56,8 @@ export default {
     methods: {
         onLogOut() {
             sessionStorage.clear('idUser')
-            sessionStorage.clear('fbssls_1188277554976347')
-            localStorage.clear('fblst_1188277554976347')
+            // sessionStorage.clear('fbssls_1188277554976347')
+            // localStorage.clear('fblst_1188277554976347')
             this.$router.push('/')
         }
     },
