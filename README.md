@@ -11,31 +11,6 @@
 ## ERD
 <img src="https://firebasestorage.googleapis.com/v0/b/todo-app-tienkim.appspot.com/o/ERD_Lover.PNG?alt=media&token=80c4aa7e-4c76-47cf-9c25-61d661e65f27" />
 
-## USECASE
-<h3>* Khách Hàng</h3>
-<img src="https://firebasestorage.googleapis.com/v0/b/todo-app-tienkim.appspot.com/o/KhachHang.PNG?alt=media&token=07f504bd-6d34-4da4-abe7-a82de78293d2" />
-
-## API
-ROOT API ENDPOINT : http://tienkim9920.herokuapp.com
-
-```bash
-
-- api/product : PRODUCT API ENDPOINT
-
-    - router.get('/', Products.index)
-
-    - router.get('/category', Products.category)
-
-    - router.get('/:id', Products.detail)
-
-    - router.get('/category/gender', Products.gender)
-
-    - router.get('/category/pagination', Products.pagination)
-
-    - router.get('/scoll/page', Products.scoll)
-  
-```
-
 
 ## Get Started
 
